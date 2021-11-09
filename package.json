@@ -1,0 +1,33 @@
+{
+  "name": "jira",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startServer": "node App/Src/server.js",
+    "server": "nodemon App/Src/server.js",
+    "start": "npm start --prefix jira_clone_project",
+    "dev": "concurrentyle \"npm run server\" \"npm run start\" "
+  },
+  "author": "Bang",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.14",
+    "validator": "^13.7.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.3.0",
+    "cord": "^1.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.3",
+    "mysql2": "^2.3.3-rc.0",
+    "passport": "^0.5.0",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^6.9.0"
+  }
+}
