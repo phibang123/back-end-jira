@@ -1,27 +1,39 @@
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-//const {User} = require('../models/user')
+const jwt = require("jsonwebtoken");
 
-let opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'secret'; //
-// opts.issuer = 'accounts.examplesoft.com';
-// opts.audience = 'yoursite.net';
 
-module.exports = (passport) =>
+const passport = (req,res,next) =>
 {
-    passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-        User.findOne({id: jwt_payload.id}, function(err, user) {
-            if (err) {
-                return done(err, false);
-            }
-            if (user) {
-                return done(null, jwt_payload);
-            } else {
-                return done(null, false);
-                // or you could create a new account
-            }
-            
-        });
-    }));
+  
+    const authorizationHeader = req.headers['accesstoken']
+ 
+    console.log(authorizationHeader)
+    //"Bearer [token]"
+    const token = authorizationHeader.split(' ')[1]
+     if (!token)
+     {
+         res.status(401).json({ success: false,statusCode: 401});
+         //res.sendStatus(401);
+     }
+     jwt.verify(token, 'secret', (err, data) =>
+     {
+         //console.log(err, data)
+         const {name} = data
+         
+         if (err)
+         {
+            res.status(401).json({ success: false,statusCode: 401});
+         }
+         else if (name)
+         {
+             next()
+         }
+         else
+         {
+            res.status(401).json({ success: false,statusCode: 401});
+         }
+     })
+}
+
+module.exports = {
+    passport: passport
 }

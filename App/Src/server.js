@@ -3,6 +3,7 @@ const router = require("../Routers/root.router");
 //const cors = require("cors");
 const bodyParser = require('body-parser');
 const passport = require('passport')
+
 // const corsOptions ={
 //   origin:'*', 
 //   credentials:true,            //access-control-allow-credentials:true
@@ -24,9 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
  
-passport
-app.use(passport.initialize());
-require('../Configs/passport')(passport)
+
+
+
 
 
 

@@ -1,0 +1,59 @@
+//categoryGetAll
+Get http://localhost:5000/api/ProjectCategory 
+accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
+//done
+
+###
+//Status
+Get http://localhost:5000/api/Status/getAll
+//done
+
+###
+//TaskType
+Get http://localhost:5000/api/TaskType/getAll
+
+
+###
+//priority
+GET http://localhost:5000/api/Priority/getAll
+//done
+
+
+###
+//signin
+POST http://localhost:5000/api/Users/signin
+Content-Type: application/json
+
+{
+  "email" : "pi@gmail.com",
+  "password": "123456"
+}
+//done
+
+
+###
+//signup
+POST http://localhost:5000/api/Users/signup
+Content-Type: application/json
+
+{
+  "email": "aloalo@gmail.com",
+  "password": "123456",
+  "name": "Lý Tín",
+  "phoneNumber": "12456789"
+}
+//done
+
+####
+//edit user
+PUT http://localhost:5000/api/Users/editUser
+Content-Type: application/json
+
+{
+  "id": "3",
+  "email": "cc@gmail.com",
+  "password": "123456",
+  "name": "Lý Tín",
+  "phoneNumber": "12456789"
+}
+//done
