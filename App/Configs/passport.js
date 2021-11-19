@@ -3,10 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const passport = (req,res,next) =>
 {
-  
+ 
+   try {
     const authorizationHeader = req.headers['accesstoken']
  
-    console.log(authorizationHeader)
+    
     //"Bearer [token]"
     const token = authorizationHeader.split(' ')[1]
      if (!token)
@@ -17,21 +18,27 @@ const passport = (req,res,next) =>
      jwt.verify(token, 'secret', (err, data) =>
      {
          //console.log(err, data)
-         const {name} = data
+         const {id} = data
          
          if (err)
          {
             res.status(401).json({ success: false,statusCode: 401});
          }
-         else if (name)
+         else if (id)
          {
+            req.id = id
              next()
+            
+            
          }
          else
          {
             res.status(401).json({ success: false,statusCode: 401});
          }
      })
+   } catch (error) {
+         res.status(401).json({ success: false,statusCode: 401,message: "Please Sigin again"});
+   }
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 //categoryGetAll
 Get http://localhost:5000/api/ProjectCategory 
-accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
+//accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
 //done
 
 ###
@@ -57,3 +57,8 @@ Content-Type: application/json
   "phoneNumber": "12456789"
 }
 //done
+
+###
+//getAllProject
+Get http://localhost:5000/api/Project/getProjectDetail/id=1
+accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImlhdCI6MTYzNzIzNjMzOCwiZXhwIjoxNjM3MzIyNzM4fQ.gA3Qx3dTOzG3BZbDiz0lrU_BBFi50s5fREt8Qw9EMBg

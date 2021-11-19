@@ -28,7 +28,7 @@ const checkEmail = async (res) =>
 const checkPassword = async (res) =>
 {
 	let port = `select true as checkPassword from users where users.password = "${passwordHash}"`;
-	console.log(port);
+
 	const [data] = await db.promise().query(port);
 	return data[0]
 };
@@ -52,17 +52,17 @@ const findUserById = async (req) =>
 {
 	
 	let { id } = req;
-	console.log(id)
+
 	let port = `select * from users where userId = ${ id };`;
 	const [[data]] = await db.promise().query(port)
-	console.log(data);
+
 	return data
 }
 const editUserProfile = async (req) =>
 {
 
 	let { id, email, password, name, phoneNumber } = req;
-	console.log(id, email, password, name, phoneNumber)
+
 	let port = `update users set email = "${ email }",password = "${ password }",name = "${ name }", phoneNumber = "${ phoneNumber }" where userId = ${ id };`;
   await db.promise().query(port)
 }

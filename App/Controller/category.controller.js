@@ -10,7 +10,8 @@ const getCategory = async (req, res) =>
     if (categoryList)
     {
       category = categoryList.map((e) =>
-      ( {
+      (
+         {
           id: e.categoryId,
           projectCategoryName: e.categoryName
         }

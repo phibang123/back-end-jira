@@ -28,7 +28,7 @@ const signup = async (req, res) =>
 			.status(200)
 			.json({ success: true, message: "sign up sucess", content: signup });
 	} catch (e) {
-		console.log(e.message);
+
 		res.status(400).json({ success: false, message: "Email đã được sử dụng!" });
 	}
 };
@@ -47,18 +47,16 @@ const signin = async (req, res) => {
 		const isMathPassword = await bcrypt.compare(password, user.password)
 		if (!isMathPassword ) return res.status(400).json({success: false,message:"password incorrect"})
 	
-		console.log(user.userId,'alo')
+
 		const token = await jwt.sign({
-			name: user.name,
-		}, 'secret', { expiresIn: '100h' });
-		console.log(user.email)
-		
-		console.log(email)
+			id: user.userId,
+		}, 'secret', { expiresIn: '24h' });
+	
     //const {userId,email,password,name,avatar,phoneNumber} = user
 		const content = {id: user.userId,email: user.email,name: user.name,avatar: user.avatar, phoneNumber: user.phoneNumber,accessToken: token}
 		//return res.status(200).json("Bearer " + token)
 	  
-		console.log(content)
+
 		res.status(200).json({ success: true,statusCode: 200, content});
 	} catch (error)
 	{
@@ -76,7 +74,7 @@ const editUser = async (req, res) =>
 		if (!isValid) return res.status(400).json({ success: false,statusCode: 400, errors});
 		
 		const checkUser = await userService.findUserById(req.body);
-		console.log(checkUser)
+
 		if (checkUser !== undefined)
 		{
 			console.log(123)
