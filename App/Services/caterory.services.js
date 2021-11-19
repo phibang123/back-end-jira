@@ -1,5 +1,5 @@
 const { db } = require('../Model/root.modal')
-
+const { Category } = require('../Model/root.modal')
 
 
 
@@ -7,10 +7,8 @@ const { db } = require('../Model/root.modal')
 const getAllCategory = async () =>
 {
   try {
-    let sql = 'SELECT * FROM `Category` '
-    const [data] = await db.promise().query(sql)
-
-    return   data
+    let category = await Category.findAll();
+    return   category
   } catch (error) {
     return error
   }

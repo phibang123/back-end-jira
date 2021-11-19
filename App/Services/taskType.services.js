@@ -1,4 +1,4 @@
-const { db } = require("../Model/root.modal");
+const { TaskType } = require('../Model/root.modal')
 
 
 
@@ -8,11 +8,11 @@ const getAllTaskType = async (req, res) =>
   
   try
   {
-
-    let sql = 'select * from taskType;'
-    const [data] = await db.promise().query(sql)
+  
+    let taskTypeAll = await TaskType.findAll();
     
-    return data
+    
+    return taskTypeAll
   } catch (error) {
     return error
   }

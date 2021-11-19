@@ -1,14 +1,15 @@
-const { db } = require('../Model/root.modal')
-
+const { Priority } = require('../Model/root.modal')
 
 
 
 const getAllPriority = async (req, res) =>
 {
-  try {
-    let sql = 'SELECT * FROM `Priority` '
-    const [data] = await db.promise().query(sql)
-    return data
+  try
+  {
+    
+    
+    let priorityAll = await Priority.findAll();
+    return priorityAll
   } catch (error) {
     return error
   }

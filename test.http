@@ -25,7 +25,7 @@ POST http://localhost:5000/api/Users/signin
 Content-Type: application/json
 
 {
-  "email" : "pi@gmail.com",
+  "email" : "Ma@gmail.com",
   "password": "123456"
 }
 //done
@@ -37,9 +37,9 @@ POST http://localhost:5000/api/Users/signup
 Content-Type: application/json
 
 {
-  "email": "aloalo@gmail.com",
+  "email": "Ma@gmail.com",
   "password": "123456",
-  "name": "Lý Tín",
+  "name": "MÀ",
   "phoneNumber": "12456789"
 }
 //done
@@ -50,10 +50,10 @@ PUT http://localhost:5000/api/Users/editUser
 Content-Type: application/json
 
 {
-  "id": "3",
-  "email": "cc@gmail.com",
+  "id": "5",
+  "email": "JAV@gmail.com",
   "password": "123456",
-  "name": "Lý Tín",
+  "name": "Bồn Lằng",
   "phoneNumber": "12456789"
 }
 //done

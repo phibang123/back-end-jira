@@ -4,12 +4,11 @@ const { DataTypes } = require("sequelize")
 
 const createUsersModel = (sequelize) =>
 {
-  return sequelize.define("jira_modal", {
+  return sequelize.define("user_table", {
     userId: {
       type: DataTypes.INTEGER, //  
       primaryKey: true,
       autoIncrement: true,
-      statusCodeallowNull: false,
       collate: 'utf8_unicode_ci', 
     },
     email: {

@@ -1,13 +1,12 @@
-const { db } = require("../Model/root.modal");
+const {Status} = require('../Model/root.modal')
 
 
 const getAllStatus = async (req, res) =>
 {
   try {
-    let sql = 'SELECT * FROM `Status` '
-    const [data] = await db.promise().query(sql)
+    let statusAll = await Status.findAll();
 
-    return   data
+    return   statusAll
   } catch (error) {
     return error
   }
