@@ -4,16 +4,12 @@ const router = require("../Routers/root.router");
 const bodyParser = require('body-parser');
 const passport = require('passport')
 
-// const corsOptions ={
-//   origin:'*', 
-//   credentials:true,            //access-control-allow-credentials:true
-//   optionSuccessStatus:200,
-// }
 
 
 
-const app = express();
 
+const app = express(); //để nó chuyển tất cả res req thành json để tiện thao tác
+app.use(express.json());
 //app.use(cors(corsOptions)) 
 // ========================== middleWare =================================
 
@@ -35,12 +31,17 @@ app.use(bodyParser.json())
 app.use(router);
 
 app.use(express.json()); //để nó chuyển tất cả res req thành json để tiện thao tác
-
-const {db} = require("../Model/root.modal")
-
-//add Catrgory to SQL Server
+	
 
 
+const { sequelize } = require('../Model/root.modal')
+//synch table
+const syncModel = async () =>
+{
+	await sequelize.sync({ alter: true })
+	console.log("đã đồng bộ model task")
+}
+syncModel();
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
