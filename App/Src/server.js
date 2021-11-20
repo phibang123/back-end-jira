@@ -2,13 +2,17 @@ const express = require("express");
 const router = require("../Routers/root.router");
 //const cors = require("cors");
 const bodyParser = require("body-parser");
-const passport = require("passport");
+
 
 const app = express(); //để nó chuyển tất cả res req thành json để tiện thao tác
 app.use(express.json());
+
+
+
 //app.use(cors(corsOptions))
 // ========================== middleWare =================================
 
+//
 //body-parser
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,14 +23,24 @@ app.use(router);
 
 app.use(express.json()); //để nó chuyển tất cả res req thành json để tiện thao tác
 
+app.use(express.urlencoded({ extended: true }));
+
+// =========================================================================
+
 const { sequelize } = require("../Model/root.modal");
 const { Category } = require("../Model/root.modal");
 const { Status } = require("../Model/root.modal")
 const { TaskType } = require("../Model/root.modal")
 const { Priority } = require("../Model/root.modal")
 
+
+
 // sequelize
 // 	.sync({ force: true })
+	// .then((result) =>
+	// {
+	 
+  // })
 // 	.then((result) => {
 // 		return Category.create({ categoryName: "Dự án web" });
 // 	})

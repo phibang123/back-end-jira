@@ -1,28 +1,35 @@
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const { createUsersModel } = require('../Model/users.modal')
+const jwt = require("jsonwebtoken");
 
+const passport = (req, res, next) => {
+	try {
+		const authorizationHeader = req.headers["accesstoken"];
+       
+		//"Bearer [token]"
+		const token = authorizationHeader.split(" ")[1];
+		if (!token) {
+			res.status(401).json({ success: false, statusCode: 401 });
+			//res.sendStatus(401);
+		}
+	
+		jwt.verify(token, "secret", (err, data) => {
+			const { id } = data;
 
-let opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'abcxyz'; //
-// opts.issuer = 'accounts.examplesoft.com';
-// opts.audience = 'yoursite.net';
+			if (err) {
+				res.status(401).json({ success: false, statusCode: 401 });
+			} else if (id) {
+				req.id = id;
+				next();
+			} else {
+				res.status(401).json({ success: false, statusCode: 401 });
+			}
+		});
+	} catch (error) {
+		res
+			.status(401)
+			.json({ success: false, statusCode: 401, message: "Please Sigin again" });
+	}
+};
 
-module.exports = (passport) =>
-{
-    passport.createUsersModel(new JwtStrategy(opts, function(jwt_payload, done) {
-        User.findOne({_id: jwt_payload.id}, function(err, user) {
-            if (err) {
-                return done(err, false);
-            }
-            if (user) {
-                return done(null, jwt_payload);
-            } else {
-                return done(null, false);
-                // or you could create a new account
-            }
-            
-        });
-    }));
-}
+module.exports = {
+	passport: passport,
+};

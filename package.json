@@ -13,6 +13,7 @@
   "author": "Bang",
   "license": "ISC",
   "devDependencies": {
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.14",
     "validator": "^13.7.0"
   },

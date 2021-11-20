@@ -37,9 +37,9 @@ POST http://localhost:5000/api/Users/signup
 Content-Type: application/json
 
 {
-  "email": "Ma@gmail.com",
+  "email": "Dan@gmail.com",
   "password": "123456",
-  "name": "MÀ",
+  "name": "TRanDan",
   "phoneNumber": "12456789"
 }
 //done
@@ -59,6 +59,6 @@ Content-Type: application/json
 //done
 
 ###
-//getAllProject
+//getProjectDetail
 Get http://localhost:5000/api/Project/getProjectDetail/id=1
-accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImlhdCI6MTYzNzIzNjMzOCwiZXhwIjoxNjM3MzIyNzM4fQ.gA3Qx3dTOzG3BZbDiz0lrU_BBFi50s5fREt8Qw9EMBg
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3NDE4MDgzLCJleHAiOjE2Mzc1MDQ0ODN9.AifmZg5zH-xwM66v-2qIFEY--X1CKqIGEVcMC-QJlY8

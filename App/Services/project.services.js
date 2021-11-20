@@ -1,31 +1,22 @@
-const { db } = require("../Model/root.modal");
+const { Project } = require('../Model/root.modal')
+const { Users } = require('../Model/root.modal')
+const { Category } = require('../Model/root.modal')
+const _ = require('lodash')
 
-const getProjectDetail = async (req, res) => {
-  try
-  {
+const getProjectDetail = async (req) => {
  
-		let sql = `select * from project left join   (select name,userId from users)   users  on project.creator = users.userId   left join category on category.categoryId = project.categoryId  where project.projectId = ${req};`;
-		//let sql = `select * from project left join  user_project on user_project.projectId = project.projectId   where project.projectId =  ${req};`;
-		const [data] = await db.promise().query(sql);
-		return data;
-	} catch (error) {
-		return error;
-	}
+	let projectDetail = await Project.findOne({ include: [{model: Category},{model: Users }] },{where: {projectId: req}},{raw: true});
+
+
+	// .then(function(accounts) {
+	// 	return _.map(accounts, function(account) { return account.Name; })
+	// })
+  return   projectDetail
+	
 };
-const getProjectDetailMembers = async (req, res) =>
-{
-	try
-  {
- 
-		let sql = `select email,name,avatar,phoneNumber,user_project.userId from  users left join   user_project on user_project.userId = users.userId where projectId = ${req};`;
-		const [data] = await db.promise().query(sql);
-		return data;
-	} catch (error) {
-		return error;
-	}
-}
+
 
 module.exports = {
 	getProjectDetail,
-	getProjectDetailMembers
+	
 };
