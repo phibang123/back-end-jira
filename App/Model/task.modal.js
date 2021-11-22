@@ -16,6 +16,11 @@ const createTaskModel = (sequelize) =>
       allowNull: false,
       collate: 'utf8_unicode_ci',   
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      collate: "utf8_unicode_ci",
+    },
     originalEstimate: {
       type: DataTypes.INTEGER, 
       allowNull: false,

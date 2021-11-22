@@ -9,6 +9,7 @@ const { createProjectModel } = require("./project.modal");
 const { createUsersAssignProjectModel } = require("./uerAssignProject.modal");
 const { createTaskModel } = require("./task.modal")
 const { createUsersAssignTaskModel } = require("./userAssignTask.modal")
+const { createCommentModel } = require("./commentt.modal")
 
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
 	host: HOST,
@@ -23,6 +24,7 @@ const TaskType = createTaskTypeModel(sequelize);
 const Project = createProjectModel(sequelize);
 const UserAssignProject = createUsersAssignProjectModel(sequelize);
 const UserAssignTask = createUsersAssignTaskModel(sequelize);
+const Comment = createCommentModel(sequelize);
 const Task = createTaskModel(sequelize)
 //relationship
 
@@ -62,6 +64,17 @@ Task.belongsTo(Project);
 //Task - User(N:N) (Assign)
 Users.belongsToMany(Task, { through: UserAssignTask, foreignKey: "userId",as: 'TaskAssignUser' });
 Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'UserAssignTask' });
+
+//Comment
+//Task - Comment(1:N) 
+// Task.hasMany(Comment);
+// Comment.belongsTo(Task,{as: 'TaskComment'});
+// //Users - Comment(1:N) 
+// Users.hasMany(Comment);
+// Comment.belongsTo(Users, { as: 'UserComment' });
+//
+Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
+Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });
 
 // sequelize
 // 	.sync({ force: true })
@@ -226,6 +239,7 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 //     return Task.create({
 //       taskName: "font end",
 // 			originalEstimate: 1000,
+//      description: "<p>abc</p>",
 // 			timeTrackingSpent: 25,
 // 			timeStrackingRemaining: 30,
 // 			projectTableProjectId: 1,
@@ -240,8 +254,51 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 //       taskName: "back end",
 // 			originalEstimate: 25000,
 // 			timeTrackingSpent: 10,
+//      description: "<p>abc</p>",
 // 			timeStrackingRemaining: 30,
 // 			projectTableProjectId: 1,
+// 			priorityTablePriorityId: 2,
+// 			tasktypeTableTypeId: 1,
+// 			statusTableStatusId: 1
+//     })
+//   })
+// 		.then(() =>
+//   {
+//     return Task.create({
+//      taskName: "redux thunk",
+// 			originalEstimate: 25000,
+// 			timeTrackingSpent: 10,
+//      description: "<p>abc</p>",
+// 			timeStrackingRemaining: 30,
+// 			projectTableProjectId: 2,
+// 			priorityTablePriorityId: 2,
+// 			tasktypeTableTypeId: 1,
+// 			statusTableStatusId: 4
+//     })
+//   })
+// 		.then(() =>
+//   {
+//     return Task.create({
+//      taskName: "redux saga",
+// 			originalEstimate: 25000,
+// 			timeTrackingSpent: 10,
+//      description: "<p>abc</p>",
+// 			timeStrackingRemaining: 30,
+// 			projectTableProjectId: 2,
+// 			priorityTablePriorityId: 2,
+// 			tasktypeTableTypeId: 1,
+// 			statusTableStatusId: 2
+//     })
+//   })
+// 		.then(() =>
+//   {
+//     return Task.create({
+//      taskName: "react Server",
+// 			originalEstimate: 25000,
+// 			timeTrackingSpent: 10,
+//      description: "<p>abc</p>",
+// 			timeStrackingRemaining: 30,
+// 			projectTableProjectId: 2,
 // 			priorityTablePriorityId: 2,
 // 			tasktypeTableTypeId: 1,
 // 			statusTableStatusId: 1
@@ -274,6 +331,24 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 		
 //     })
 //   })
+// .then(() =>
+//   {
+//     return Comment.create({    
+// 			content: "Alo alo 1234 1234",
+// 			userId: 3,
+//      taskId: 1,		
+//     })
+//   })
+// .then(() =>
+//   {
+//     return Comment.create({    
+// 			content: "Dung co nhon",
+// 			userId: 4,
+//      taskId: 1,		
+//     })
+//   })
+
+
 
 module.exports = {
 	sequelize,
@@ -285,5 +360,6 @@ module.exports = {
 	TaskType,
 	UserAssignProject,
 	UserAssignTask,
-	Task
+	Task,
+	Comment
 };

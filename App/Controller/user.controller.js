@@ -13,7 +13,9 @@ const {
 const usersServices = require("../Services/users.services");
 const { validateSigninInput } = require("../Validation/validateSigninInput");
 
-const signup = async (req, res) => {
+const signup = async (req, res) =>
+{
+	
 	try {
 		const { errors, isValid } = validateResignterInput(req.body);
 		if (!isValid) return res.status(400).json(errors);
