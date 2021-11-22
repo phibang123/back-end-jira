@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize")
 
 
-
 const createUsersModel = (sequelize) =>
 {
   return sequelize.define("user_table", {

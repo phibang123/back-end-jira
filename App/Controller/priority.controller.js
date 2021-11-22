@@ -17,7 +17,7 @@ const getPriority = async (req, res) =>
         alias: e.alias
       }
     });
-    console.log(priority)
+  
       res.status(200).json({
         success: true, statusCode: 200, content: priority
         

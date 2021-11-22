@@ -13,49 +13,40 @@ const getDetailProject = async (req, res) => {
 			});
 		} else {
 			const projectDetail = await projectServices.getProjectDetail(projectId);
-		
-			if (projectDetail)
-			{
-				console.log(JSON.stringify(projectDetail,null,2));
-				// projectDetailMap = projectDetail?.map((p) =>
-				// ( {
-				// 		alias: p.alias,
-				// 		description: p.description,
-				// 		id: p.projectId,
-				// 		projectCategory: {
-				// 			id: p.category_table?.categoryId,
-				// 			name: p.category_table?.categoryName
-				// 		},
-				// 		creator: {
-				// 			id: p.user_table.userId,
-				// 			name: p.user_table.name
-				// 		},
-				// 		projectName: projectName
-				// 	}
-				// ))
-				 let projectArr = [projectDetail];
-				[projectDetailMap] = projectArr.map((p) =>
-				( {
-						alias: p.alias,
-						description: p.description,
-						creator: {
-							id: p.user_table.userId,
-							name: p.user_table.name
-						},
-						id: p.projectId,
-						projectCategory: {
-							id: p.category_table.categoryId,
-							name: p.category_table.categoryName
-						},
-						projectName: p.projectName,
-						createProjectDate: p.createProjectDate,
-					}
-				))
-				console.log(projectDetailMap)
+
+			if (projectDetail) {
+				console.log(JSON.stringify(projectDetail, null, 2));
+			
+				let projectArr = [projectDetail];
+				//const [projectDetailMap] = projectArr.map((p) => ({
+				// 	alias: p.alias,
+				// 	description: p.description,
+				// 	creator: {
+				// 		id: p.user_table?.userId,
+				// 		name: p.user_table?.name,
+				// 	},
+				// 	id: p.projectId,
+				// 	members: p?.UserAssignProject?.map((users) => {
+				// 		return {
+				// 			userId: users?.userId,
+				// 			name: users?.name,
+				// 			email: users?.email,
+				// 			avatar: users?.avatar,
+				// 			phoneNumber: users?.phoneNumber,
+				// 		};
+				// 	}),
+				// 	projectCategory: {
+				// 		id: p?.category_table?.categoryId,
+				// 		name: p?.category_table?.categoryName,
+				// 	},
+				// 	projectName: p.projectName,
+				// 	createProjectDate: p.createProjectDate,
+				// }));
+				
 				res.status(200).json({
 					success: true,
 					statusCode: 200,
-					content: projectDetailMap,
+					content: projectDetail,
 				});
 			} else {
 				res

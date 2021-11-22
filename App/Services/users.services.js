@@ -4,7 +4,7 @@ const { Users } = require("../Model/root.modal");
 const jwt = require("jsonwebtoken");
 const createUser = async (users) => {
 
-		console.log(users);
+
 		let newUser = await Users.create(users)
     return newUser
 		
@@ -19,7 +19,7 @@ const loginUser = async (req, res) => {
 		where: { email },
 		raw: true
 	});
-	console.log(JSON.stringify(findUsers, null, 2));
+	//console.log(JSON.stringify(findUsers, null, 2));
 	return findUsers;
 };
 
@@ -39,7 +39,7 @@ const updateUser = async (req, res) => {
 			}
 		);
 	});
-	console.log(id, email, password, name, phoneNumber);
+	//console.log(id, email, password, name, phoneNumber);
 	let userId = id;
 	const userUpdate = await Users.findOne({
 		where: { userId },
