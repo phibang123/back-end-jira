@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startServer": "node App/Src/server.js",
-    "build": "react-scripts build",
+   
     "server": "nodemon App/Src/server.js",
     "start": "npm start --prefix jira_clone_project",
     "dev": "concurrentyle \"npm run server\" \"npm run start\" "
