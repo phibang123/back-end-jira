@@ -11,18 +11,18 @@ const { createTaskModel } = require("./task.modal")
 const { createUsersAssignTaskModel } = require("./userAssignTask.modal")
 const { createCommentModel } = require("./commentt.modal")
 
-const sequelize = new Sequelize(DB, USER, PASSWORD, {
+const sequelize = new Sequelize(DB, USER, PASSWORD,{
 	host: HOST,
 	dialect,
 	connectionString: process.env.DATABASE_URL,
-	logging: false,
+
 	protocol: 'postgres',
 	dialectOptions: {
 		ssl: {
 			require: true,
-			rejectUnauthorized: false,
+			rejectUnauthorized: false
 		}
-  }
+	}
 });
 const connected = async () => {
 	try {

@@ -10,18 +10,18 @@ Get http://localhost:5000/api/Status/getAll
 
 ###
 //TaskType
-Get http://localhost:5432/api/TaskType/getAll
+Get http://localhost:5000/api/TaskType/getAll
 
 
 ###
 //priority
-GET http://localhost:5432/api/Priority/getAll
+GET http://localhost:500/api/Priority/getAll
 //done
 
 
 ###
 //signin
-POST http://localhost:5432/api/Users/signin
+POST http://localhost:5000/api/Users/signin
 Content-Type: application/json
 
 {
@@ -60,5 +60,5 @@ Content-Type: application/json
 
 ###
 //getProjectDetail
-Get http://localhost:5432/api/Project/getProjectDetail/id=1
-accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NTc4NDM4LCJleHAiOjE2Mzc2NjQ4Mzh9.3yCA9-DnN7C8Zan6FzeNLcn7xfpuJ_FWCHz7LgE-rDk
+Get http://localhost:5000/api/Project/getProjectDetail/id=1
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
