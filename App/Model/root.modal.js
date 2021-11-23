@@ -54,7 +54,7 @@ const Task = createTaskModel(sequelize)
 
 //Category - Project(1:N)
 Category.hasMany(Project);
-Project.belongsTo(Category);
+Project.belongsTo(Category, {allowNull: false});
 //Users - Project(1:N) (creator)
 Users.hasMany(Project);
 Project.belongsTo(Users);
