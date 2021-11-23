@@ -14,10 +14,13 @@ const { createCommentModel } = require("./commentt.modal")
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
 	host: HOST,
 	dialect,
+	connectionString: process.env.DATABASE_URL,
+	logging: false,
+	protocol: 'postgres',
 	dialectOptions: {
-		"ssl": {
-			"require": true,
-			"rejectUnauthorized": false,
+		ssl: {
+			require: true,
+			rejectUnauthorized: false,
 		}
   }
 });
