@@ -14,7 +14,23 @@ const { createCommentModel } = require("./commentt.modal")
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
 	host: HOST,
 	dialect,
+	dialectOptions: {
+		"ssl": {
+			"require": true,
+			"rejectUnauthorized": false,
+		}
+  }
 });
+const connected = async () => {
+	try {
+		await sequelize.authenticate();
+		console.log('Connection has been established successfully.');
+	} catch (error) {
+		console.error('Unable to connect to the database:', error);
+	}
+}
+connected()
+
 
 const Users = createUsersModel(sequelize);
 const Category = createCategoryModel(sequelize);
@@ -68,10 +84,10 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 //Comment
 //Task - Comment(1:N) 
 // Task.hasMany(Comment);
-// Comment.belongsTo(Task,{as: 'TaskComment'});
+
 // //Users - Comment(1:N) 
 // Users.hasMany(Comment);
-// Comment.belongsTo(Users, { as: 'UserComment' });
+
 //
 Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
 Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });
