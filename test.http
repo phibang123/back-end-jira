@@ -82,5 +82,5 @@ Content-Type: application/json
 
 ###
 //deleteProject
-DELETE  http://localhost:3000/api/Project/deleteProject/projectId=6
+DELETE  http://localhost:3000/api/Project/deleteProject/projectId=7
 accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
