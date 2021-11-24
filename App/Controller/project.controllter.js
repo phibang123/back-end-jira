@@ -228,9 +228,128 @@ const deleteProject = async (req, res) =>
 		
 	}
 }
+
+
+const updateProject = async (req, res) =>
+{
+	try {
+		let { id } = req.body
+		let project = await projectServices.checkCreatorProject({ projectId: id })
+		if (project.userTableUserId === req.id)
+		{
+			let { categoryId, description, id, projectName } = req.body
+			let projectUpdate = await projectServices.updateProject(project,{categoryTableCategoryId: categoryId,description,projectId: id,projectName})
+		
+			console.log(JSON.stringify(projectUpdate, null, 2));
+			let [projectMap] = [projectUpdate]?.map((project) =>
+			{
+				return {
+					alias: project?.alias,
+					categoryId: project?.categoryTableCategoryId,
+					creator: project?.userTableUserId,
+					description: project?.description,
+					id: project?.projectId,
+					projectName: project?.projectName
+				}
+			})
+			res.status(200).json({
+				success: true,
+				statusCode: 200,
+				content: projectMap,
+			});
+		}
+		else if (project.userTableUserId !== req.id)
+		{
+			res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+		}
+	} catch (error) {
+		console.log(error)
+		res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Project not found" });
+	}
+}
+
+const asssignUserProject = async (req, res) => 
+{
+	try {
+		let { projectId,userId } = req.body
+		let project = await projectServices.checkCreatorProject({ projectId })
+		if (project.userTableUserId === req.id)
+		{
+		await projectServices.assignUserProject({ userId, projectId })
+		
+			res.status(200).json({
+				success: true,
+				statusCode: 200,
+				message: "Xử lý thành công!",
+				content: "has added the user to the project !",
+			});
+			
+		}
+		else
+		{
+			res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+		}
+	} catch (error) {
+		//console.log(error)
+		res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Project not found" });
+	}
+}
+
+const removeUserProject = async (req, res) =>
+{
+	let { projectId,userId } = req.body
+
+  await projectServices.checkCreatorProject({ projectId }).then((project) =>
+	{
+		if (project.userTableUserId === req.id)
+		{
+				projectServices.removeUserProject({ userId, projectId }).then(() =>
+			{
+				res.status(200).json({
+					success: true,
+					statusCode: 200,
+					message: "Xử lý thành công!",
+					content: "has added the user to the project !",
+				});
+			}).catch(() =>
+			{
+				res
+				.status(400)
+				.json({ success: true, statusCode: 400, message: "User not found" });
+			})
+		}
+		else
+		{
+			res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+		}
+		
+	}).catch((error) =>
+	{
+		res
+		.status(400)
+		.json({ success: true, statusCode: 400, message: "Project not found" });
+	})
+	
+	
+	
+	
+}
 module.exports = {
 	getDetailProject,
 	getAllProject,
 	createProject,
-	deleteProject
+	deleteProject,
+	updateProject,
+	asssignUserProject,
+	removeUserProject
 };

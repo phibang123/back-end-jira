@@ -25,7 +25,7 @@ POST http://localhost:3000/api/Users/signin
 Content-Type: application/json
 
 {
-  "email" : "tanloi@gmail.com",
+  "email" : "phibang@gmail.com",
   "password": "123456"
 }
 //done
@@ -81,6 +81,126 @@ Content-Type: application/json
 }
 
 ###
-//deleteProject
+//delete
 DELETE  http://localhost:3000/api/Project/deleteProject/projectId=7
 accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
+Content-Type: application/json
+
+
+###
+//updatProject
+PUT  http://localhost:3000/api/Project/updateProject
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "categoryId": 2,
+  "description": "<p>Plan, track, and manage your agile and software development projects in Jira. Customize your workflow, collaborate, and release great software.</p>",
+  "id": 1,
+  "projectName": "Shop Bán Chuột"
+}
+
+
+###
+//assignUserProject
+POST   http://localhost:3000/api/Project/assignUserProject
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "userId": 4
+}
+
+
+###
+//removeUserProject
+POST   http://localhost:3000/api/Project/removeUserFromProject
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "userId": 4
+}
+
+###
+//updateTask status
+PUT    http://localhost:3000/api/Task/updateStatus
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 2,
+  "statusId": 2
+}
+
+###
+//updateTask Priority
+PUT    http://localhost:3000/api/Task/updatePriority
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 2,
+  "priorityId": 10
+}
+
+###
+//updateTask Description
+PUT    http://localhost:3000/api/Task/updateDescription
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 2,
+  "description": "alo alo"
+}
+
+
+###
+//updateTimeTracking task
+PUT    http://localhost:3000/api/Task/updateTimeTracking
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 2,
+  "timeTrackingSpent": 20,
+  "timeTrackingRemaining": 20
+}
+
+###
+//updateEstimate task
+PUT    http://localhost:3000/api/Task/updateEstimate
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 2,
+  "originalEstimate": "1000000"
+}
+
+
+###
+//addUserAss task
+POST     http://localhost:3000/api/Task/assignUserTask
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 1,
+  "userId": 3
+}
+
+
+###
+//removeUserTask task
+POST       http://localhost:3000/api/Task/removeUserFromTask
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "taskId": 1,
+  "userId": 3
+}

@@ -5,6 +5,7 @@ const {
 	TaskType,
 	Comment,
 	UserAssignTask,
+	UserAssignProject,
 } = require("../Model/root.modal");
 const { Users } = require("../Model/root.modal");
 const { Category } = require("../Model/root.modal");
@@ -116,24 +117,68 @@ const checkCreatorProject = async (req) => {
 	try {
 		let checkproject = await Project.findOne({
 			where: { projectId: req.projectId },
-			attributes: ["userTableUserId" ]
 		});
-		return checkproject
+		return checkproject;
 	} catch (error) {
-		throw new Error("Project not exist")
+		throw new Error("Project not exist");
 	}
 };
 
-const deleteProjectById = async (req) =>
-{
+const deleteProjectById = async (req) => {
 	try {
 		let deleteProject = await Project.destroy({
 			where: { projectId: req.projectId },
-			attributes: ["projectId" ]
+			attributes: ["projectId"],
 		});
-		return deleteProject
+		return deleteProject;
 	} catch (error) {
-		throw new Error(error)
+		throw new Error(error);
+	}
+};
+
+const updateProject = async (projected, req) => {
+	try {
+		let { categoryTableCategoryId, description, projectName, projectId } = req;
+
+		//let projected = await Project.findOne({projectId: projectId})
+		console.log(projected);
+		if (projected) {
+			projected.categoryTableCategoryId = categoryTableCategoryId;
+			projected.description = description;
+			projected.projectName = projectName;
+			projected.alias = projectName;
+
+			const projectUpdate = await projected.save();
+			return projectUpdate;
+		} else {
+			throw new Error(error);
+		}
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const assignUserProject = async (project) => {
+	let { userId, projectId } = project;
+	try {
+		//console.log( userId, projectId )
+		let userAss = await UserAssignProject.create({ userId, projectId });
+		return userAss;
+	} catch (error) {
+		throw new Error();
+	}
+};
+
+const removeUserProject = async (project) => {
+	let { userId, projectId } = project;
+	try {
+		//console.log( userId, projectId )
+		let userAss = await UserAssignProject.destroy({
+			where: { userId, projectId },
+		});
+		return userAss;
+	} catch (error) {
+		throw new Error();
 	}
 };
 module.exports = {
@@ -143,4 +188,7 @@ module.exports = {
 	createProject,
 	checkCreatorProject,
 	deleteProjectById,
+	updateProject,
+	assignUserProject,
+	removeUserProject
 };

@@ -4,7 +4,8 @@ const userRouter = require('./user.router')
 const statusRouter = require('./status.router')
 const priorityRouter = require('./priority.router')
 const taskTypeRouter = require('./taskType.router')
-const projectRouter = require('./project.router')
+const projectRouter = require('./project.router');
+const taskRouter = require('./task.router');
 const router = express.Router();
 
 //url <=> http://localhost:3000/students
@@ -26,5 +27,8 @@ router.use("/api/TaskType", taskTypeRouter);
 
 //Project
 router.use("/api/Project", projectRouter)
+
+//Task
+router.use("/api/Task", taskRouter)
 
 module.exports = router
