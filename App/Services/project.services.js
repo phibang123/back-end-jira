@@ -28,7 +28,7 @@ const getTaskByStatus = async (req) => {
 					{
 						model: Users,
 						as: "UserAssignTask",
-						attributes: ['userId','name','avatar'],
+						attributes: ["userId", "name", "avatar"],
 						through: {
 							attributes: [],
 						},
@@ -38,8 +38,7 @@ const getTaskByStatus = async (req) => {
 						as: "TaskComment",
 						//attributes: ['commentId'],
 						through: {
-						
-							attributes: ['content','commentId'],
+							attributes: ["content", "commentId"],
 						},
 					},
 					// {
@@ -78,6 +77,20 @@ const getProjectDetail = async (req) => {
 	// });
 
 	let projectDetail = await Project.findOne({
+		include: [{ model: Category }, { model: Users }],
+	});
+
+	//console.log(projectDetail);
+	// .then(function(accounts) {
+	// 	return _.map(accounts, function(account) { return account.Name; })
+	// })
+	//console.log(projectDetail)
+	return projectDetail;
+};
+
+const getAllProject = async (req) => {
+	console.log(123);
+	let projectAll = await Project.findAll({
 		include: [
 			{ model: Category },
 			{ model: Users },
@@ -90,18 +103,44 @@ const getProjectDetail = async (req) => {
 				},
 			},
 		],
-		where: { projectId: req },
 	});
-
-	//console.log(projectDetail);
-	// .then(function(accounts) {
-	// 	return _.map(accounts, function(account) { return account.Name; })
-	// })
-	//console.log(projectDetail)
-	return projectDetail;
+	return projectAll;
 };
 
+const createProject = async (req) => {
+	let project = await Project.create(req);
+	return project;
+};
+
+const checkCreatorProject = async (req) => {
+	try {
+		let checkproject = await Project.findOne({
+			where: { projectId: req.projectId },
+			attributes: ["userTableUserId" ]
+		});
+		return checkproject
+	} catch (error) {
+		throw new Error("Project not exist")
+	}
+};
+
+const deleteProjectById = async (req) =>
+{
+	try {
+		let deleteProject = await Project.destroy({
+			where: { projectId: req.projectId },
+			attributes: ["projectId" ]
+		});
+		return deleteProject
+	} catch (error) {
+		throw new Error(error)
+	}
+};
 module.exports = {
 	getProjectDetail,
 	getTaskByStatus,
+	getAllProject,
+	createProject,
+	checkCreatorProject,
+	deleteProjectById,
 };

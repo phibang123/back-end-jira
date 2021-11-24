@@ -1,27 +1,27 @@
 //categoryGetAll
-Get http://localhost:5000/api/ProjectCategory 
+Get http://localhost:3000/api/ProjectCategory 
 //accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
 //done
 
 ###
 //Status
-Get http://localhost:5000/api/Status/getAll
+Get http://localhost:3000/api/Status/getAll
 //done
 
 ###
 //TaskType
-Get http://localhost:5000/api/TaskType/getAll
+Get http://localhost:3000/api/TaskType/getAll
 
 
 ###
 //priority
-GET http://localhost:5000/api/Priority/getAll
+GET http://localhost:3000/api/Priority/getAll
 //done
 
 
 ###
 //signin
-POST http://localhost:5000/api/Users/signin
+POST http://localhost:3000/api/Users/signin
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 //signup
-POST http://localhost:5000/api/Users/signup
+POST http://localhost:3000/api/Users/signup
 Content-Type: application/json
 
 {
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ####
 //edit user
-PUT http://localhost:5000/api/Users/editUser
+PUT http://localhost:3000/api/Users/editUser
 Content-Type: application/json
 
 {
@@ -60,5 +60,27 @@ Content-Type: application/json
 
 ###
 //getProjectDetail
-Get http://localhost:5000/api/Project/getProjectDetail/id=1
-accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NTc4NDM4LCJleHAiOjE2Mzc2NjQ4Mzh9.3yCA9-DnN7C8Zan6FzeNLcn7xfpuJ_FWCHz7LgE-rDk
+Get http://localhost:3000/api/Project/getProjectDetail/id=1
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
+
+###
+//getAllProject
+Get http://localhost:3000/api/Project/getAllProject
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
+
+###
+//createProject
+POST  http://localhost:3000/api/Project/createProjectAuthorize
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M
+Content-Type: application/json
+
+{
+  "categoryId": 2,
+  "description": "<p>Plan, track, and manage your agile and software development projects in Jira. Customize your workflow, collaborate, and release great software.</p>",
+  "projectName": "Shop Bán Figure"
+}
+
+###
+//deleteProject
+DELETE  http://localhost:3000/api/Project/deleteProject/projectId=7
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjM3Njg1ODU3LCJleHAiOjE2Mzc3NzIyNTd9.Iq_rgDBYQ92V-n8BNsSASBkLO6qKlbh8oJjtIra3V5M

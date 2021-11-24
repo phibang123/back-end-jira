@@ -11,10 +11,34 @@ const { createTaskModel } = require("./task.modal")
 const { createUsersAssignTaskModel } = require("./userAssignTask.modal")
 const { createCommentModel } = require("./commentt.modal")
 
-const sequelize = new Sequelize(DB, USER, PASSWORD, {
+
+const sequelize = new Sequelize(DB, USER, PASSWORD,{
 	host: HOST,
 	dialect,
+	connectionString: process.env.DATABASE_URL,
+
+	protocol: 'postgres',
+	dialectOptions: {
+		ssl: {
+			require: true,
+			rejectUnauthorized: false
+		}
+	}
 });
+
+
+
+
+const connected = async () => {
+	try {
+		await sequelize.authenticate();
+		console.log('Connection has been established successfully.');
+	} catch (error) {
+		console.error('Unable to connect to the database:', error);
+	}
+}
+connected()
+
 
 const Users = createUsersModel(sequelize);
 const Category = createCategoryModel(sequelize);
@@ -30,7 +54,7 @@ const Task = createTaskModel(sequelize)
 
 //Category - Project(1:N)
 Category.hasMany(Project);
-Project.belongsTo(Category);
+Project.belongsTo(Category, {allowNull: false});
 //Users - Project(1:N) (creator)
 Users.hasMany(Project);
 Project.belongsTo(Users);
@@ -68,10 +92,10 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 //Comment
 //Task - Comment(1:N) 
 // Task.hasMany(Comment);
-// Comment.belongsTo(Task,{as: 'TaskComment'});
+
 // //Users - Comment(1:N) 
 // Users.hasMany(Comment);
-// Comment.belongsTo(Users, { as: 'UserComment' });
+
 //
 Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
 Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });

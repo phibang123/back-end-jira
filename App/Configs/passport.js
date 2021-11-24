@@ -26,7 +26,7 @@ const passport = (req, res, next) => {
 	} catch (error) {
 		res
 			.status(401)
-			.json({ success: false, statusCode: 401, message: "Please Sigin again" });
+			.json({ success: false, statusCode: 405, message: "Please Sigin again" });
 	}
 };
 
