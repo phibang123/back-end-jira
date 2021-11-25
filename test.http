@@ -204,3 +204,47 @@ Content-Type: application/json
   "taskId": 1,
   "userId": 3
 }
+
+
+
+###
+//createTask task
+POST       http://localhost:3000/api/Task/createTask
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
+Content-Type: application/json
+
+{
+  "listUserAsign": [
+    2,3
+  ],
+  "taskName": "đá banh",
+  "description": "string",
+  "statusId": 1,
+  "originalEstimate": 100,
+  "timeTrackingSpent": 50,
+  "timeTrackingRemaining": 50,
+  "projectId": 1,
+  "typeId": 1,
+  "priorityId": 2
+}
+
+
+###
+//update task
+POST       http://localhost:3000/api/Task/updateTask
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3ODY3NTA3LCJleHAiOjE2Mzc5NTM5MDd9.kjOzCc7whVoLiOr22Vh9S96UP0ipw3wQ5oJzslSIbHw
+Content-Type: application/json
+
+{
+  "listUserAsign": [],
+  "taskName": "đá Bi",
+  "description": "string",
+  "statusId": 1,
+  "originalEstimate": 100,
+  "timeTrackingSpent": 50,
+  "timeTrackingRemaining": 50,
+  "projectId": 1,
+  "typeId": 1,
+  "priorityId": 2,
+  "taskId": 17
+}

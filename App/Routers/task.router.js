@@ -1,7 +1,8 @@
 const express = require("express");
 const taskRouter = express.Router();
 const taskController = require("../Controller/task.controller");
-const { passport } = require("../Configs/passport") 
+const { passport } = require("../Configs/passport")
+const { passportProject } = require("../Configs/passportProject");
 
 //taskRouter.get("",)
 
@@ -31,6 +32,14 @@ taskRouter.post("/assignUserTask", passport, taskController.addUserAssignTask)
 
 //removeAssignTask Task
 taskRouter.post("/removeUserFromTask",passport, taskController.removeUserAssignTask)
+
+
+//createTask Task
+taskRouter.post("/createTask", passportProject,taskController.createTask)
+
+
+//updateTask Task
+taskRouter.post("/updateTask", passportProject,taskController.updateTask)
 
 
 module.exports = taskRouter
