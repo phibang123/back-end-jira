@@ -248,3 +248,35 @@ Content-Type: application/json
   "priorityId": 2,
   "taskId": 17
 }
+
+
+
+
+###
+//getAllCommentFrom Task
+get       http://localhost:3000/api/Comment/getAll
+Content-Type: application/json
+
+{
+  "taskId" : 2
+}
+
+###
+//insertComment Task
+POST        http://localhost:3000/api/Comment/insertComment
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3ODY3NTA3LCJleHAiOjE2Mzc5NTM5MDd9.kjOzCc7whVoLiOr22Vh9S96UP0ipw3wQ5oJzslSIbHw
+Content-Type: application/json
+
+{
+  "taskId" : 2,
+  "contentComment": "alo alo alo"
+}
+
+###
+//deleteComment Task
+DELETE         http://localhost:3000/api/Comment/deleteComment/idComment=12
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3ODc2MTkzLCJleHAiOjE2Mzc5NjI1OTN9._gxm8Eu50PNmtxz2TR75qkm5jjalweB6Rbj8It0hSiU
+Content-Type: application/json
+
+
+

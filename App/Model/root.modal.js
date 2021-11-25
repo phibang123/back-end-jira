@@ -91,14 +91,14 @@ Task.belongsToMany(Users, { through: UserAssignTask, foreignKey: "taskId",as: 'U
 
 //Comment
 //Task - Comment(1:N) 
-// Task.hasMany(Comment);
-
+Task.hasMany(Comment, {foreignKey: "taskId"});
+Comment.belongsTo(Task, {foreignKey: "taskId"})
 // //Users - Comment(1:N) 
-// Users.hasMany(Comment);
-
+ Users.hasMany(Comment, {foreignKey: "userId"});
+ Comment.belongsTo(Users, {foreignKey: "userId"})
 //
-Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
-Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });
+// Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
+// Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });
 
 // sequelize
 // 	.sync({ force: true })
