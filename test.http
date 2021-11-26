@@ -1,11 +1,11 @@
 //categoryGetAll
-Get http://localhost:3000/api/ProjectCategory 
+Get http://localhost:7001/api/ProjectCategory 
 //accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
 //done
 
 ###
 //Status
-Get http://localhost:3000/api/Status/getAll
+Get http://localhost:5432/api/Status/getAll
 //done
 
 ###
@@ -33,14 +33,14 @@ Content-Type: application/json
 
 ###
 //signup
-POST http://localhost:3000/api/Users/signup
+POST http://localhost:5000/api/Users/signup
 Content-Type: application/json
 
 {
-  "email": "Dan@gmail.com",
+  "email": "loine8@gmail.com",
   "password": "123456",
   "name": "TRanDan",
-  "phoneNumber": "12456789"
+  "phoneNumber": 120000
 }
 //done
 
@@ -76,7 +76,7 @@ accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNj
 
 ###
 //getProjectDetail
-Get http://localhost:3000/api/Project/getProjectDetail/id=1
+Get http://localhost:5000/api/Project/getProjectDetail/id=1
 accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3OTM5ODYwLCJleHAiOjE2MzgwMjYyNjB9.Py9nvtZ1hFKy5qoMEFjOYvq9CfxmY1-C_C3OAza9_W4
 
 ###
@@ -105,7 +105,7 @@ Content-Type: application/json
 
 ###
 //updatProject
-PUT  http://localhost:3000/api/Project/updateProject
+PUT  http://localhost:3000/api/Project/updateProject/projectId=1
 accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3NzY4NzI3LCJleHAiOjE2Mzc4NTUxMjd9.YAvJtDssOZmqxW6o-xQQ9ecLByiHc_-of3d5gNmr3sA
 Content-Type: application/json
 
@@ -274,12 +274,9 @@ accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNj
 
 ###
 //getAllCommentFrom Task
-get       http://localhost:3000/api/Comment/getAll
+get   http://localhost:5000/api/Comment/getAll/taskId=1
 Content-Type: application/json
 
-{
-  "taskId" : 1
-}
 
 ###
 //insertComment Task

@@ -3,12 +3,13 @@ const commentService = require("../Services/comment.services")
 
 const getAllCommentTask = async (req, res) =>
 {
-  try {
-    let { taskId } = req.body
+  try
+  {
+    let taskId = req.params.id;
+    console.log(taskId)
     let comment = await commentService.getAllCommentFromTask({ taskId })
     
-    if (comment?.taskId === taskId)
-    {
+   
       let {TaskComment } = comment
       let commentMap = TaskComment.map((e) =>
       {
@@ -37,11 +38,7 @@ const getAllCommentTask = async (req, res) =>
         }
       })
       res.status(200).json({ success: true, statusCode: 200, content: commentMap})
-    }
-    else
-    {
-      res.status(400).json({ success: false, statusCode: 404,message: "Task not exist" })
-    }
+    
   } catch (error) {
     res.status(400).json({ success: false, statusCode: 400,message: "Bad request" })
   }

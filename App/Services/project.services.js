@@ -6,15 +6,16 @@ const {
 	Comment,
 	UserAssignTask,
 	UserAssignProject,
+	Users
 } = require("../Model/root.modal");
-const { Users } = require("../Model/root.modal");
+
 const { Category } = require("../Model/root.modal");
 const { Task } = require("../Model/root.modal");
 //const { UserAssign } = require("../Model/root.modal");
 const _ = require("lodash");
 
 const getTaskByStatus = async (req) => {
-	console.log(req);
+
 	let taskAllStatusProject = await Status.findAll({
 		model: Status,
 		include: [
@@ -68,7 +69,7 @@ const getTaskByStatus = async (req) => {
 const getProjectDetail = async (req) =>
 {
 	
-	console.log(req)
+
 	// let taskAllStatusProject = await Status.findAll({
 	// 	include: [
 	// 		{
@@ -81,7 +82,7 @@ const getProjectDetail = async (req) =>
 	// });
   
 	let projectDetail = await Project.findOne({
-		include: [{ model: Category }, { model: Users, as: 'UserAssignProject' }],
+		include: [{ model: Category },{ model: Users }, { model: Users, as: 'UserAssignProject' }],
 		where: {projectId : req}
 	});
 
@@ -94,12 +95,12 @@ const getProjectDetail = async (req) =>
 };
 
 const getAllProject = async (req) => {
-	console.log(123);
+	
 	let projectAll = await Project.findAll({
 		include: [
 			{ model: Category },
 			{ model: Users },
-
+	
 			{
 				model: Users,
 				as: "UserAssignProject",
@@ -109,6 +110,7 @@ const getAllProject = async (req) => {
 			},
 		],
 	});
+	console.log(JSON.stringify(projectAll,null,2))
 	return projectAll;
 };
 
@@ -145,7 +147,7 @@ const updateProject = async (projected, req) => {
 		let { categoryTableCategoryId, description, projectName, projectId } = req;
 
 		//let projected = await Project.findOne({projectId: projectId})
-		console.log(projected);
+	
 		if (projected) {
 			projected.categoryTableCategoryId = categoryTableCategoryId;
 			projected.description = description;

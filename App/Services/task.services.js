@@ -94,7 +94,7 @@ const addUserAssignTask = async (req) => {
 
 const findTaskAssign = async (req) => {
 	let { taskId, userId } = req;
-	console.log(taskId, userId);
+
 	let userAssignTask = await UserAssignTask.findOne({
 		where: { userId: userId, taskId: taskId },
 	});
@@ -126,7 +126,7 @@ const checkTaskAuthor = async (req) => {
 
 const createTask = async (req) => {
 	try {
-		console.log(req);
+
 		let newTask = await Task.create(req);
 		return newTask;
 	} catch (error) {
@@ -136,7 +136,7 @@ const createTask = async (req) => {
 
 const updateTask = async (req) => {
 	try {
-		console.log(113);
+	
 		let {
 			taskName,
 			description,
@@ -173,7 +173,7 @@ const updateTask = async (req) => {
 };
 
 const addUserAssignTaskList = async (req, taskId) => {
-	console.log(req);
+	
 	await UserAssignTask.destroy({ where: { taskId }, returning: true });
 	await UserAssignTask.bulkCreate(req, { returning: true });
 };

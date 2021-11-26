@@ -14,7 +14,9 @@ const {
 const { validateSigninInput } = require("../Validation/validateSigninInput");
 
 const signup = async (req, res) => {
-	try {
+	try
+	{
+
 		const { errors, isValid } = validateResignterInput(req.body);
 		if (!isValid) return res.status(400).json(errors);
 		let users = req.body;
@@ -44,9 +46,10 @@ const signup = async (req, res) => {
 
 		if (newUser !== undefined) {
 			res.status(200).json({
-				success: true,
-				statusCode: 200,
 				message: "sign up sucess",
+				success: true,
+				statusCode: 200,	
+				data: newUser,
 				content: newUser,
 			});
 		} else {

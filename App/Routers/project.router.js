@@ -21,7 +21,7 @@ projectRouter.post("/createProjectAuthorize", passport, projectController.create
 projectRouter.delete("/deleteProject/projectId=:id", passport, projectController.deleteProject);
 
 //updateProject
-projectRouter.put("/updateProject", passport, projectController.updateProject);
+projectRouter.put("/updateProject/projectId=:id", passport, projectController.updateProject);
 
 //assignUserProject
 projectRouter.post("/assignUserProject", passport, projectController.asssignUserProject);

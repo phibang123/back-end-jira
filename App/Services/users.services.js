@@ -3,8 +3,11 @@ const bcrypt = require("bcryptjs");
 const { Users, UserAssignProject, Project } = require("../Model/root.modal");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
-const createUser = async (users) => {
+const createUser = async (users) =>
+{
+	
 	let newUser = await Users.create(users);
+	console.log(JSON.stringify(newUser,null,2))
 	return newUser;
 };
 
@@ -78,7 +81,7 @@ const getAllUSerKey = async (req) => {
 
 const getAllUSerKeyNull = async (req) => {
 	try {
-		console.log(req);
+		
 		let allUser = await Users.findAll({
 			where: {
 				userId: {

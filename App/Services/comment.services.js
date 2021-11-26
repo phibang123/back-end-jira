@@ -3,7 +3,7 @@ const { Comment, Users, Task } = require("../Model/root.modal");
 const getAllCommentFromTask = async (req, res) => {
 	try {
 		let { taskId } = req;
-
+   
 		let comment = await Task.findOne({
 			//where: { taskId: taskId },
 			include: [
@@ -17,7 +17,7 @@ const getAllCommentFromTask = async (req, res) => {
 			where: { taskId: taskId },
 		});
 
-		console.log(JSON.stringify(comment, null, 2));
+		
 		return comment;
 	} catch (error) {
 		console.log(error);
@@ -42,7 +42,7 @@ const insertComment = async (req) => {
 const findCommentUser = async (req, res) => {
 	try {
 		let { commentId } = req;
-		console.log(commentId);
+
 		let commentFind = await Comment.findOne({
 			where: {
 				commentId: commentId,

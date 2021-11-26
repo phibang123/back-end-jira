@@ -1,3 +1,4 @@
+//const { DB, HOST, PASSWORD, USER, dialect } = require("../Configs/db.config");
 const { DB, HOST, PASSWORD, USER, dialect } = require("../Configs/db.config");
 const { Sequelize, DataTypes } = require("sequelize");
 const { createUsersModel } = require("./users.modal");

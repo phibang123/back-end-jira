@@ -3,7 +3,7 @@ const projectServices = require("../Services/project.services");
 const getDetailProject = async (req, res) => {
 	try {
 		let projectId = req.params.id;
-
+    
 		if (!projectId) {
 			res.status(404).json({
 				success: true,
@@ -13,7 +13,7 @@ const getDetailProject = async (req, res) => {
 			});
 		} else {
 			const projectDetail = await projectServices.getProjectDetail(projectId);
-
+		
 			if (projectDetail) {
 				//console.log(JSON.stringify(projectDetail, null, 2));
 				const taskByStatus = await projectServices.getTaskByStatus(projectId);
@@ -115,11 +115,14 @@ const getAllProject = async (req, res) => {
 	try {
 		let projectAll = await projectServices.getAllProject();
 		console.log(JSON.stringify(projectAll, null, 2));
-		if (projectAll) {
+		if (projectAll)
+		{
+			
 			let projectAllMap = projectAll?.map((project) => {
 				return {
 					alias: project?.alias,
 					categoryId: project?.categoryTableCategoryId,
+					projectName: project?.projectName,
 					categoryName: project?.category_table?.categoryName,
 					creator: {
 						id: project?.user_table?.userId,
@@ -206,7 +209,7 @@ const deleteProject = async (req, res) =>
 		if (project.userTableUserId == req.id)
 		{
 			let id = req.id
-			 await projectServices.deleteProjectById({ projectId, id })
+			await projectServices.deleteProjectById({ projectId, id })
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
@@ -233,8 +236,8 @@ const deleteProject = async (req, res) =>
 const updateProject = async (req, res) =>
 {
 	try {
-		let { id } = req.body
-		let project = await projectServices.checkCreatorProject({ projectId: id })
+		let  projectId  = req.params.id;
+		let project = await projectServices.checkCreatorProject({ projectId })
 		if (project.userTableUserId === req.id)
 		{
 			let { categoryId, description, id, projectName } = req.body
