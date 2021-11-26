@@ -1,3 +1,4 @@
+const { Users } = require("../Model/root.modal");
 const taskService = require("../Services/task.services");
 
 const updateStatus = async (req, res) => {
@@ -264,6 +265,75 @@ const updateTask = async (req, res) => {
 			.json({ success: true, statusCode: 400, message: "Task not found" });
 	}
 };
+
+const getTaskDetail = async (req, res) =>
+{
+	try {
+		let taskId = req.params.id
+		let task = await taskService.getTaskDetail(taskId)
+		if (task[0]?.taskId)
+		{
+			let [taskMap] = task.map((task) =>
+			{
+				return {
+					alias: task.taskName,
+					assigness: task?.UserAssignTask?.map((user) =>
+					{
+						return {
+							id: user?.userId,
+							name: user?.name,
+							avatar: user?.avatar
+						}
+					}),
+					description: task?.description,
+					lstComment: task?.TaskComment?.map((comment) =>
+					{
+						return {
+							avatar: comment?.avatar,
+							commentContent: comment?.comment_table?.content,
+							id: comment?.comment_table?.commentId,
+							idUser: comment?.userId,
+							name: comment?.name
+						}
+					}),
+					originalEstimate: task?.originalEstimate,
+					priorityId: task?.priorityTablePriorityId,
+					priorityTask: {
+						priority: task?.priority_table?.priority,
+						priorityId: task?.priority_table?.priorityId,
+					},
+					projectId: task?.projectTableProjectId,
+					statusId: task?.statusTableStatusId,
+					taskId: task?.taskId,
+					taskName: task?.taskName,
+					taskTypeDetail: {
+						id: task?.tasktype_table?.typeId,
+						taskType: task?.taskType_table?.taskType,
+					},
+					timeTrackingRemaining: task?.timeTrackingRemaining,
+					timeTrackingSpent: task?.timeTrackingSpent,
+					typeId: task?.tasktypeTableTypeId
+				}
+			})
+			res.status(200).json({
+				success: true,
+				statusCode: 200,
+				message: "Xử lý thành công!",
+				content: taskMap,
+			});
+		}
+		else
+		{
+			res
+		.status(400)
+		.json({ success: true, statusCode: 400, message: "Task not found" });
+		}
+	} catch (error) {
+		res
+		.status(400)
+		.json({ success: true, statusCode: 400, message: "Task not found" });
+	}
+}
 module.exports = {
 	updateStatus,
 	updatePriority,
@@ -273,5 +343,6 @@ module.exports = {
 	addUserAssignTask,
 	removeUserAssignTask,
 	createTask,
-	updateTask
+	updateTask,
+	getTaskDetail
 };

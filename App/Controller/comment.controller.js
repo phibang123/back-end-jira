@@ -7,21 +7,33 @@ const getAllCommentTask = async (req, res) =>
     let { taskId } = req.body
     let comment = await commentService.getAllCommentFromTask({ taskId })
     
-    if (comment[0]?.commentId)
+    if (comment?.taskId === taskId)
     {
-      let commentMap = comment.map((e) =>
+      let {TaskComment } = comment
+      let commentMap = TaskComment.map((e) =>
       {
         return {
+          // user: {
+          //   userId: e?.user_table?.userId,
+          //   name: e?.user_table?.name,
+          //   avatar: e?.user_table?.avatar
+          // },
+          // id: e?.commentId,
+          // userId: e?.userId,
+          // taskId: e?.taskId,
+          // contentComment: e?.content,
+          // alias: e?.content
           user: {
-            userId: e?.user_table?.userId,
-            name: e?.user_table?.name,
-            avatar: e?.user_table?.avatar
+            userId: e?.userId,
+            name: e?.name,
+            avatar: e?.avatar
           },
-          id: e?.commentId,
-          userId: e?.userId,
-          taskId: e?.taskId,
-          contentComment: e?.content,
-          alias: e?.content
+          id: e?.comment_table?.commentId,
+          userId:  e?.userId,
+          taskId: e?.comment_table?.taskId,
+          content: e?.comment_table?.commentId,
+          alias: e?.comment_table?.commentId,
+          
         }
       })
       res.status(200).json({ success: true, statusCode: 200, content: commentMap})

@@ -10,12 +10,10 @@ const userService = require("../Services/users.services");
 const {
 	validateResignterInput,
 } = require("../Validation/validateResignterInput");
-const usersServices = require("../Services/users.services");
+
 const { validateSigninInput } = require("../Validation/validateSigninInput");
 
-const signup = async (req, res) =>
-{
-	
+const signup = async (req, res) => {
 	try {
 		const { errors, isValid } = validateResignterInput(req.body);
 		if (!isValid) return res.status(400).json(errors);
@@ -45,27 +43,23 @@ const signup = async (req, res) =>
 		});
 
 		if (newUser !== undefined) {
-			res
-				.status(200)
-				.json({
-					success: true,
-					statusCode: 200,
-					message: "sign up sucess",
-					content: newUser,
-				});
+			res.status(200).json({
+				success: true,
+				statusCode: 200,
+				message: "sign up sucess",
+				content: newUser,
+			});
 		} else {
 			res
 				.status(400)
 				.json({ success: false, statusCode: 400, message: "error" });
 		}
 	} catch (error) {
-		res
-			.status(400)
-			.json({
-				success: false,
-				statusCode: 400,
-				message: "Email đã được sử dụng!",
-			});
+		res.status(400).json({
+			success: false,
+			statusCode: 400,
+			message: "Email đã được sử dụng!",
+		});
 	}
 };
 
@@ -88,12 +82,14 @@ const signin = async (req, res) => {
 			return res
 				.status(400)
 				.json({ success: false, message: "password incorrect" });
-	 
-		
-		
-		const token = await jwt.sign({
-			id: findUsers.userId,
-		}, 'secret', { expiresIn: '24h' });
+
+		const token = await jwt.sign(
+			{
+				id: findUsers.userId,
+			},
+			"secret",
+			{ expiresIn: "24h" }
+		);
 		const content = {
 			id: findUsers.userId,
 			email: findUsers.email,
@@ -137,8 +133,90 @@ const editUser = async (req, res) => {
 		res.status(400).json({ success: false, message: "Email đã được sử dụng!" });
 	}
 };
+
+const getUserByKey = async (req, res) => {
+	try {
+		let id = req.id;
+		let key = req.params.key;
+
+		let allUser = await userService.getAllUSerKey({ id, key });
+
+		let userMap = allUser?.map((user) => {
+			return {
+				avatar: user.avatar,
+				userId: user.userId,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				name: user.name,
+			};
+		});
+		res.status(200).json({
+			success: true,
+			statusCode: 200,
+			content: userMap,
+		});
+	} catch (error) {
+		res
+			.status(400)
+			.json({ success: false, statusCode: 400, message: "User not exist" });
+	}
+};
+
+const getUserByKeyNull = async (req, res) => {
+	try {
+		let allUser = await userService.getAllUSerKeyNull(req.id);
+		let userMap = allUser?.map((user) => {
+			return {
+				avatar: user.avatar,
+				userId: user.userId,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				name: user.name,
+			};
+		});
+		res.status(200).json({
+			success: true,
+			statusCode: 200,
+			content: userMap,
+		});
+	} catch (error) {
+		res
+			.status(400)
+			.json({ success: false, statusCode: 400, message: "User not exist" });
+	}
+};
+
+const getUserByProjectId = async (req, res) => {
+	try {
+		let key = req.params.id;
+		let AllUserProject = await userService.getUserByProjectId(key);
+	
+		let UserMap = AllUserProject?.UserAssignProject?.map((user) => {
+			return {
+				avatar: user.avatar,
+				userId: user.userId,
+				email: user.email,
+				phoneNumber: user.phoneNumber,
+				name: user.name,
+			};
+		});
+	
+		res.status(200).json({
+			success: true,
+			statusCode: 200,
+			content: UserMap,
+		});
+	} catch (error) {
+		res
+			.status(400)
+			.json({ success: false, statusCode: 400, message: "User not exist" });
+	}
+};
 module.exports = {
 	signup: signup,
 	signin: signin,
 	editUser: editUser,
+	getUserByKey: getUserByKey,
+	getUserByKeyNull: getUserByKeyNull,
+	getUserByProjectId: getUserByProjectId,
 };

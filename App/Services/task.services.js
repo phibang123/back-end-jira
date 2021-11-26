@@ -1,4 +1,11 @@
-const { UserAssignTask, Task, Project } = require("../Model/root.modal");
+const {
+	UserAssignTask,
+	Task,
+	Project,
+	Priority,
+	TaskType,
+	Users,
+} = require("../Model/root.modal");
 const { QueryTypes } = require("sequelize");
 
 const findTask = async (taskId) => {
@@ -129,8 +136,8 @@ const createTask = async (req) => {
 
 const updateTask = async (req) => {
 	try {
-	  console.log(113)
-	  let {
+		console.log(113);
+		let {
 			taskName,
 			description,
 			statusTableStatusId,
@@ -140,27 +147,24 @@ const updateTask = async (req) => {
 			projectTableProjectId,
 			tasktypeTableTypeId,
 			priorityTablePriorityId,
-			taskId
-		} = req
-	
+			taskId,
+		} = req;
+
 		let newTask = await Task.findOne({ where: { taskId: taskId } });
 
-		if (newTask)
-		{
-			newTask.taskName = taskName,
-		  newTask.description = description,
-			newTask.statusTableStatusId = statusTableStatusId,
-			newTask.originalEstimate = originalEstimate,
-			newTask.timeTrackingSpent = timeTrackingSpent,
-			newTask.timeTrackingRemaining = timeTrackingRemaining,
-			newTask.projectTableProjectId = projectTableProjectId,
-			newTask.tasktypeTableTypeId = tasktypeTableTypeId,
-			newTask.priorityTablePriorityId = priorityTablePriorityId
-			const taskUpdate = newTask.save()
-			return taskUpdate
-		}
-		else
-		{
+		if (newTask) {
+			(newTask.taskName = taskName),
+				(newTask.description = description),
+				(newTask.statusTableStatusId = statusTableStatusId),
+				(newTask.originalEstimate = originalEstimate),
+				(newTask.timeTrackingSpent = timeTrackingSpent),
+				(newTask.timeTrackingRemaining = timeTrackingRemaining),
+				(newTask.projectTableProjectId = projectTableProjectId),
+				(newTask.tasktypeTableTypeId = tasktypeTableTypeId),
+				(newTask.priorityTablePriorityId = priorityTablePriorityId);
+			const taskUpdate = newTask.save();
+			return taskUpdate;
+		} else {
 			throw new Error();
 		}
 	} catch (error) {
@@ -168,10 +172,45 @@ const updateTask = async (req) => {
 	}
 };
 
-const addUserAssignTaskList = async (req,taskId) => {
+const addUserAssignTaskList = async (req, taskId) => {
 	console.log(req);
-	await UserAssignTask.destroy({where: {taskId},returning: true})
-	await UserAssignTask.bulkCreate(req, {returning: true});
+	await UserAssignTask.destroy({ where: { taskId }, returning: true });
+	await UserAssignTask.bulkCreate(req, { returning: true });
+};
+
+const getTaskDetail = async (req) => {
+	try {
+		let task = await Task.findAll({
+			where: { taskId: req },
+			include: [
+				{
+					model: Users,
+					as: "UserAssignTask",
+					attributes: ["userId", "name", "avatar"],
+					through: {
+						attributes: [],
+					},
+				
+				},
+				{ model: Priority },
+				{ model: TaskType },
+				{
+					model: Users,
+					as: "TaskComment",
+					//attributes: ['commentId'],
+					through: {
+						attributes: ["content", "commentId"],
+					},
+				
+				},
+				
+			],
+	
+		});
+		return task
+	} catch (error) {
+		console.log(error)
+	}
 };
 module.exports = {
 	updateSatusTask: updateSatusTask,
@@ -185,4 +224,5 @@ module.exports = {
 	createTask: createTask,
 	updateTask: updateTask,
 	addUserAssignTaskList: addUserAssignTaskList,
+	getTaskDetail: getTaskDetail,
 };

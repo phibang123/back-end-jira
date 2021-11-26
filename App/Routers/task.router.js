@@ -39,7 +39,11 @@ taskRouter.post("/createTask", passportProject,taskController.createTask)
 
 
 //updateTask Task
-taskRouter.post("/updateTask", passportProject,taskController.updateTask)
+taskRouter.post("/updateTask", passportProject, taskController.updateTask)
+
+
+//getDetail Task
+taskRouter.get("/getTaskDetail/taskId=:id", passport,taskController.getTaskDetail)
 
 
 module.exports = taskRouter
