@@ -29,12 +29,14 @@ const signup = async (req, res) => {
 				resolve(hash);
 			});
 		});
-
+		const getRandomInt = (max) => {
+			return Math.floor(Math.random() * max);
+		}
 		let {
 			email,
 			name,
-			phoneNumber,
-			avatar = `https://ui-avatars.com/api/?name=${name}`,
+			phoneNumber,	
+			avatar = `https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=104${getRandomInt(25)}&size=xxlarge}`,
 		} = users;
 		let newUser = await userService.createUser({
 			email,

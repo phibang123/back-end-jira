@@ -6,11 +6,12 @@ const getAllCommentTask = async (req, res) =>
   try
   {
     let taskId = req.params.id;
-    console.log(taskId)
+   
     let comment = await commentService.getAllCommentFromTask({ taskId })
     
    
-      let {TaskComment } = comment
+      let { TaskComment } = comment
+      console.log(TaskComment)
       let commentMap = TaskComment.map((e) =>
       {
         return {
@@ -32,7 +33,7 @@ const getAllCommentTask = async (req, res) =>
           id: e?.comment_table?.commentId,
           userId:  e?.userId,
           taskId: e?.comment_table?.taskId,
-          content: e?.comment_table?.commentId,
+          contentComment: e?.comment_table?.content,
           alias: e?.comment_table?.commentId,
           
         }

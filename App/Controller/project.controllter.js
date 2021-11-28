@@ -3,7 +3,7 @@ const projectServices = require("../Services/project.services");
 const getDetailProject = async (req, res) => {
 	try {
 		let projectId = req.params.id;
-    
+
 		if (!projectId) {
 			res.status(404).json({
 				success: true,
@@ -13,7 +13,7 @@ const getDetailProject = async (req, res) => {
 			});
 		} else {
 			const projectDetail = await projectServices.getProjectDetail(projectId);
-		
+
 			if (projectDetail) {
 				//console.log(JSON.stringify(projectDetail, null, 2));
 				const taskByStatus = await projectServices.getTaskByStatus(projectId);
@@ -75,7 +75,7 @@ const getDetailProject = async (req, res) => {
 										id: task?.tasktype_table?.typeId,
 										taskType: task?.tasktype_table?.taskType,
 									},
-									timeTrackingRemaining: task?.timeStrackingRemaining,
+									timeTrackingRemaining: task?.timeTrackingRemaining,
 									timeTrackingSpent: task?.timeTrackingSpent,
 									createTaskDate: task?.createTaskDate,
 									typeId: task?.tasktypeTableTypeId,
@@ -115,9 +115,7 @@ const getAllProject = async (req, res) => {
 	try {
 		let projectAll = await projectServices.getAllProject();
 		console.log(JSON.stringify(projectAll, null, 2));
-		if (projectAll)
-		{
-			
+		if (projectAll) {
 			let projectAllMap = projectAll?.map((project) => {
 				return {
 					alias: project?.alias,
@@ -156,147 +154,147 @@ const getAllProject = async (req, res) => {
 	}
 };
 
-const createProject = async (req, res) =>
-{
+const createProject = async (req, res) => {
 	try {
-		console.log(req.body)
-		let { projectName, description, categoryId } = req.body
-		let categoryTableCategoryId = categoryId
-		let alias = projectName
-		let userTableUserId = req.id
-		
-		let createdproject = await projectServices.createProject({ projectName, description, categoryTableCategoryId, alias, userTableUserId })
-		if (createdproject)
-		{
+		console.log(req.body);
+		let { projectName, description, categoryId } = req.body;
+		let categoryTableCategoryId = categoryId;
+		let alias = projectName;
+		let userTableUserId = req.id;
+
+		let createdproject = await projectServices.createProject({
+			projectName,
+			description,
+			categoryTableCategoryId,
+			alias,
+			userTableUserId,
+		});
+		if (createdproject) {
 			console.log(JSON.stringify(createdproject, null, 2));
 			let projectResult = [createdproject];
-			let [projectMap] = projectResult?.map((project) =>
-			{
+			let [projectMap] = projectResult?.map((project) => {
 				return {
 					alias: project?.alias,
 					categoryId: project?.categoryTableCategoryId,
 					creator: project?.userTableUserId,
 					description: project?.description,
 					id: project?.projectId,
-					projectName: project?.projectName
-				}
-			})
+					projectName: project?.projectName,
+				};
+			});
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				content: projectMap,
 			});
-		}
-		else
-		{
-			res
-			.status(500)
-			.json({ success: true, statusCode: 500, message: "Not Found" });
+		} else {
+			res.status(500).json({
+				success: false,
+				statusCode: 500,
+				message: "Not Found",
+				content: "Not Found",
+			});
 		}
 	} catch (error) {
-		res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "Project name exist" });
+		res.status(400).json({
+			success: false,
+			statusCode: 400,
+			message: "Project name exist",
+			content: "Project name already exists",
+		});
 	}
-}
+};
 
-const deleteProject = async (req, res) =>
-{
-	try
-	{
-		let projectId = req.params.id
-		let project = await projectServices.checkCreatorProject({ projectId })
-		if (project.userTableUserId == req.id)
-		{
-			let id = req.id
-			await projectServices.deleteProjectById({ projectId, id })
+const deleteProject = async (req, res) => {
+	try {
+		let projectId = req.params.id;
+		let project = await projectServices.checkCreatorProject({ projectId });
+		if (project.userTableUserId == req.id) {
+			let id = req.id;
+			await projectServices.deleteProjectById({ projectId, id });
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				content: "Ddelete project is successfully",
 			});
+		} else {
+			res.status(400).json({
+				success: true,
+				statusCode: 400,
+				message: "User not Authorized",
+			});
 		}
-		else
-		{
-			res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "User not Authorized" });
-		}
-	} catch (error)
-	{
-		console.log(error)
+	} catch (error) {
+		console.log(error);
 		res
 			.status(400)
 			.json({ success: true, statusCode: 400, message: "Project not found" });
-		
 	}
-}
+};
 
-
-const updateProject = async (req, res) =>
-{
+const updateProject = async (req, res) => {
 	try {
-		let  projectId  = req.params.id;
-		let project = await projectServices.checkCreatorProject({ projectId })
-		if (project.userTableUserId === req.id)
-		{
-			let { categoryId, description, id, projectName } = req.body
-			let projectUpdate = await projectServices.updateProject(project,{categoryTableCategoryId: categoryId,description,projectId: id,projectName})
-		
+		let projectId = req.params.id;
+		let project = await projectServices.checkCreatorProject({ projectId });
+		if (project.userTableUserId === req.id) {
+			let { categoryId, description, id, projectName } = req.body;
+			let projectUpdate = await projectServices.updateProject(project, {
+				categoryTableCategoryId: categoryId,
+				description,
+				projectId: id,
+				projectName,
+			});
+
 			console.log(JSON.stringify(projectUpdate, null, 2));
-			let [projectMap] = [projectUpdate]?.map((project) =>
-			{
+			let [projectMap] = [projectUpdate]?.map((project) => {
 				return {
 					alias: project?.alias,
 					categoryId: project?.categoryTableCategoryId,
 					creator: project?.userTableUserId,
 					description: project?.description,
 					id: project?.projectId,
-					projectName: project?.projectName
-				}
-			})
+					projectName: project?.projectName,
+				};
+			});
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				content: projectMap,
 			});
-		}
-		else if (project.userTableUserId !== req.id)
-		{
-			res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+		} else if (project.userTableUserId !== req.id) {
+			res.status(400).json({
+				success: true,
+				statusCode: 400,
+				message: "User not Authorized",
+			});
 		}
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		res
 			.status(400)
 			.json({ success: true, statusCode: 400, message: "Project not found" });
 	}
-}
+};
 
-const asssignUserProject = async (req, res) => 
-{
+const asssignUserProject = async (req, res) => {
 	try {
-		let { projectId,userId } = req.body
-		let project = await projectServices.checkCreatorProject({ projectId })
-		if (project.userTableUserId === req.id)
-		{
-		await projectServices.assignUserProject({ userId, projectId })
-		
+		let { projectId, userId } = req.body;
+		let project = await projectServices.checkCreatorProject({ projectId });
+		if (project.userTableUserId === req.id) {
+			await projectServices.assignUserProject({ userId, projectId });
+
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				message: "Xử lý thành công!",
 				content: "has added the user to the project !",
 			});
-			
-		}
-		else
-		{
-			res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+		} else {
+			res.status(400).json({
+				success: true,
+				statusCode: 400,
+				message: "User not Authorized",
+			});
 		}
 	} catch (error) {
 		//console.log(error)
@@ -304,49 +302,83 @@ const asssignUserProject = async (req, res) =>
 			.status(400)
 			.json({ success: true, statusCode: 400, message: "Project not found" });
 	}
-}
+};
 
-const removeUserProject = async (req, res) =>
-{
-	let { projectId,userId } = req.body
+const removeUserProject = async (req, res) => {
+	let { projectId, userId } = req.body;
 
-  await projectServices.checkCreatorProject({ projectId }).then((project) =>
-	{
-		if (project.userTableUserId === req.id)
-		{
-				projectServices.removeUserProject({ userId, projectId }).then(() =>
-			{
-				res.status(200).json({
+	await projectServices
+		.checkCreatorProject({ projectId })
+		.then((project) => {
+			if (project.userTableUserId === req.id) {
+				projectServices
+					.removeUserProject({ userId, projectId })
+					.then(() => {
+						res.status(200).json({
+							success: true,
+							statusCode: 200,
+							message: "Xử lý thành công!",
+							content: "has added the user to the project !",
+						});
+					})
+					.catch(() => {
+						res.status(400).json({
+							success: true,
+							statusCode: 400,
+							message: "User not found",
+						});
+					});
+			} else {
+				res.status(400).json({
 					success: true,
-					statusCode: 200,
-					message: "Xử lý thành công!",
-					content: "has added the user to the project !",
+					statusCode: 400,
+					message: "User not Authorized",
 				});
-			}).catch(() =>
-			{
-				res
-				.status(400)
-				.json({ success: true, statusCode: 400, message: "User not found" });
-			})
-		}
-		else
-		{
+			}
+		})
+		.catch((error) => {
 			res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "User not Authorized" });
+				.status(400)
+				.json({ success: true, statusCode: 400, message: "Project not found" });
+		});
+};
+
+const userLeaveProject = async (req, res) => {
+	try {
+		let userId = req.id;
+		let { projectId } = req.body;
+		let project = await projectServices.getProjectDetail(projectId);
+		if (project.projectId) {
+			console.log(123);
+			let index = project?.UserAssignProject?.findIndex(
+				(project) => project.userId === userId
+			);
+			if (index === -1) {
+				res
+					.status(400)
+					.json({
+						success: true,
+						statusCode: 400,
+						message: "You not assign project",
+					});
+			} else {
+				let projectId = project.projectId;
+				await projectServices.removeUserProject({ userId, projectId });
+				res
+				.status(200)
+				.json({ success: true, statusCode: 200, message: "Leave Project is success" });
+			}
+		} else {
+			res
+				.status(400)
+				.json({ success: true, statusCode: 400, message: "Project not found" });
 		}
-		
-	}).catch((error) =>
-	{
+	} catch (error) {
 		res
-		.status(400)
-		.json({ success: true, statusCode: 400, message: "Project not found" });
-	})
-	
-	
-	
-	
-}
+			.status(500)
+			.json({ success: true, statusCode: 400, message: "Project not found" });
+	}
+};
 module.exports = {
 	getDetailProject,
 	getAllProject,
@@ -354,5 +386,6 @@ module.exports = {
 	deleteProject,
 	updateProject,
 	asssignUserProject,
-	removeUserProject
+	removeUserProject,
+	userLeaveProject,
 };

@@ -187,6 +187,7 @@ const removeUserProject = async (project) => {
 		throw new Error();
 	}
 };
+
 module.exports = {
 	getProjectDetail,
 	getTaskByStatus,
@@ -196,5 +197,6 @@ module.exports = {
 	deleteProjectById,
 	updateProject,
 	assignUserProject,
-	removeUserProject
+	removeUserProject,
+
 };

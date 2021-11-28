@@ -191,7 +191,7 @@ const createTask = async (req, res) => {
 	} catch (error) {
 		res
 			.status(400)
-			.json({ success: true, statusCode: 400, message: "Task not found" });
+			.json({ success: true, statusCode: 400, message: "Task not found" ,content: "task already exists!"});
 	}
 };
 
@@ -334,6 +334,35 @@ const getTaskDetail = async (req, res) =>
 		.json({ success: true, statusCode: 400, message: "Task not found" });
 	}
 }
+const deleteTask = async (req, res) =>
+{
+	try
+	{
+		let userId = req.id
+		let taskId = req.params.id
+		let task = await taskService.checkAuthorTaskNotProject(taskId)
+		console.log(JSON.stringify(task, null, 2));
+		if (task?.userTableUserId === userId)
+		{
+			await taskService.deleteTaskById(taskId)
+			res.status(200).json({
+				success: true,
+				statusCode: 200,
+				content: "Ddelete task is successfully",
+			});
+		}
+		else
+		{
+			res
+		.status(401)
+		.json({ success: true, statusCode: 401, message: "You not Author" });
+		}
+	} catch (error) {
+		res
+		.status(400)
+		.json({ success: true, statusCode: 400, message: "Task not found" });
+	}
+}
 module.exports = {
 	updateStatus,
 	updatePriority,
@@ -344,5 +373,6 @@ module.exports = {
 	removeUserAssignTask,
 	createTask,
 	updateTask,
-	getTaskDetail
+	getTaskDetail,
+	deleteTask
 };

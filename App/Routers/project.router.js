@@ -28,4 +28,7 @@ projectRouter.post("/assignUserProject", passport, projectController.asssignUser
 
 //removeUserProject
 projectRouter.post("/removeUserFromProject", passport, projectController.removeUserProject);
+
+//removeUserProject
+projectRouter.post("/userLeaveProject", passport, projectController.userLeaveProject);
 module.exports = projectRouter;

@@ -14,6 +14,7 @@ const createTaskModel = (sequelize) =>
     taskName: {
       type: DataTypes.STRING, 
       allowNull: false,
+      unique: true,
       collate: 'utf8_unicode_ci',   
     },
     description: {
@@ -33,7 +34,7 @@ const createTaskModel = (sequelize) =>
       collate: 'utf8_unicode_ci', 
       defaultValue: 0
     },
-    timeStrackingRemaining: {
+    timeTrackingRemaining: {
       type: DataTypes.INTEGER, 
       allowNull: false,
       collate: 'utf8_unicode_ci', 

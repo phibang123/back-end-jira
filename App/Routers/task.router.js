@@ -46,4 +46,7 @@ taskRouter.post("/updateTask", passportProject, taskController.updateTask)
 taskRouter.get("/getTaskDetail/taskId=:id", passport,taskController.getTaskDetail)
 
 
+//deleteTask Task
+taskRouter.delete("/removeTask/taskId=:id", passport,taskController.deleteTask)
+
 module.exports = taskRouter

@@ -6,7 +6,7 @@ const {
 	TaskType,
 	Users,
 } = require("../Model/root.modal");
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, where } = require("sequelize");
 
 const findTask = async (taskId) => {
 	const task = await Task.findOne({ where: { taskId: taskId } });
@@ -64,7 +64,7 @@ const updateTimeTracking = async (req) => {
 
 	if (taskFind) {
 		(taskFind.timeTrackingSpent = timeTrackingSpent),
-			(taskFind.timeStrackingRemaining = timeTrackingRemaining);
+			(taskFind.timeTrackingRemaining = timeTrackingRemaining);
 
 		const taskUpdate = await taskFind.save();
 		return taskUpdate;
@@ -126,7 +126,6 @@ const checkTaskAuthor = async (req) => {
 
 const createTask = async (req) => {
 	try {
-
 		let newTask = await Task.create(req);
 		return newTask;
 	} catch (error) {
@@ -136,7 +135,6 @@ const createTask = async (req) => {
 
 const updateTask = async (req) => {
 	try {
-	
 		let {
 			taskName,
 			description,
@@ -173,7 +171,6 @@ const updateTask = async (req) => {
 };
 
 const addUserAssignTaskList = async (req, taskId) => {
-	
 	await UserAssignTask.destroy({ where: { taskId }, returning: true });
 	await UserAssignTask.bulkCreate(req, { returning: true });
 };
@@ -190,7 +187,6 @@ const getTaskDetail = async (req) => {
 					through: {
 						attributes: [],
 					},
-				
 				},
 				{ model: Priority },
 				{ model: TaskType },
@@ -201,15 +197,35 @@ const getTaskDetail = async (req) => {
 					through: {
 						attributes: ["content", "commentId"],
 					},
-				
 				},
-				
 			],
+		});
+
+		return task;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const deleteTaskById = async (req) => {
+	try {
+		let taskDelete = await Task.destroy({ where: { taskId: req } });
+		return taskDelete;
+	} catch (error) {
+		throw new Error();
+	}
+};
+
+const checkAuthorTaskNotProject = async (req) => {
+	try {
+
+		let projectalo = await Project.findOne({
+		  include: [{model: Task,where: {taskId : req}}],
 	
 		});
-		return task
+		return projectalo
 	} catch (error) {
-		console.log(error)
+		throw new Error();
 	}
 };
 module.exports = {
@@ -225,4 +241,6 @@ module.exports = {
 	updateTask: updateTask,
 	addUserAssignTaskList: addUserAssignTaskList,
 	getTaskDetail: getTaskDetail,
+	deleteTaskById: deleteTaskById,
+	checkAuthorTaskNotProject: checkAuthorTaskNotProject,
 };

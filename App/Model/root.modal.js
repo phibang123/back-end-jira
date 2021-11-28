@@ -103,15 +103,23 @@ Task.belongsToMany(Users, {
 });
 
 // //Comment
-// //Task - Comment(1:N) 
+// //Task - Comment(1:N)
 // Task.hasMany(Comment, {foreignKey: "taskId"});
 // Comment.belongsTo(Task, {foreignKey: "taskId"})
-// // //Users - Comment(1:N) 
+// // //Users - Comment(1:N)
 //  Users.hasMany(Comment, {foreignKey: "userId"});
 //  Comment.belongsTo(Users, {foreignKey: "userId"})
 
-Users.belongsToMany(Task, { through: Comment, foreignKey: "userId",as: 'UserComment' });
-Task.belongsToMany(Users, { through: Comment, foreignKey: "taskId",as: 'TaskComment' });
+Users.belongsToMany(Task, {
+	through: Comment,
+	foreignKey: "userId",
+	as: "UserComment",
+});
+Task.belongsToMany(Users, {
+	through: Comment,
+	foreignKey: "taskId",
+	as: "TaskComment",
+});
 
 const fistData = () => {
 	sequelize
@@ -128,22 +136,32 @@ const fistData = () => {
 
 		//Status
 		.then((result) => {
-			return Status.create({ statusName: "BACKLOG", alias: "tồn động" });
+			return Status.create({
+				statusId: "1",
+				statusName: "BACKLOG",
+				alias: "tồn động",
+			});
 		})
 		.then((result) => {
 			return Status.create({
+				statusId: "2",
 				statusName: "SELECTED FOR DEVELOPMENT",
 				alias: "được chọn để phát triển",
 			});
 		})
 		.then((result) => {
 			return Status.create({
+				statusId: "3",
 				statusName: "IN PROGRESS",
 				alias: "trong tiến trình",
 			});
 		})
 		.then((result) => {
-			return Status.create({ statusName: "DONE", alias: "hoàn thành" });
+			return Status.create({
+				statusId: "4",
+				statusName: "DONE",
+				alias: "hoàn thành",
+			});
 		})
 
 		// //Priority
@@ -191,7 +209,7 @@ const fistData = () => {
 				password:
 					"$2a$10$2uzRqhRWKNPPLrinAYONbegGrOcLKMaaXmEGXIMgUzVTw/4.W2BN6",
 				name: "Bằng Đẹp trai",
-				avatar: "https://ui-avatars.com/api/?name=MÀ",
+				avatar: "https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=10403&size=xxlarge",
 				phoneNumber: "12456789",
 			});
 		})
@@ -201,7 +219,7 @@ const fistData = () => {
 				password:
 					"$2a$10$2uzRqhRWKNPPLrinAYONbegGrOcLKMaaXmEGXIMgUzVTw/4.W2BN6",
 				name: "Lợi Kích Dục",
-				avatar: "https://ui-avatars.com/api/?name=LD",
+				avatar: "https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=10402&size=xxlarge",
 				phoneNumber: "987654",
 			});
 		})
@@ -211,7 +229,7 @@ const fistData = () => {
 				password:
 					"$2a$10$2uzRqhRWKNPPLrinAYONbegGrOcLKMaaXmEGXIMgUzVTw/4.W2BN6",
 				name: "Đức Phắc Boi",
-				avatar: "https://ui-avatars.com/api/?name=ĐP",
+				avatar: "https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=10401&size=xxlarge",
 				phoneNumber: "987654",
 			});
 		})
@@ -221,7 +239,7 @@ const fistData = () => {
 				password:
 					"$2a$10$2uzRqhRWKNPPLrinAYONbegGrOcLKMaaXmEGXIMgUzVTw/4.W2BN6",
 				name: "Đức San San",
-				avatar: "https://ui-avatars.com/api/?name=ĐS",
+				avatar: "https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=10400&size=xxlarge",
 				phoneNumber: "987654",
 			});
 		})
@@ -280,7 +298,7 @@ const fistData = () => {
 				originalEstimate: 1000,
 				description: "<p>abc</p>",
 				timeTrackingSpent: 25,
-				timeStrackingRemaining: 30,
+				timeTrackingRemaining: 30,
 				projectTableProjectId: 1,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
@@ -293,7 +311,7 @@ const fistData = () => {
 				originalEstimate: 25000,
 				timeTrackingSpent: 10,
 				description: "<p>abc</p>",
-				timeStrackingRemaining: 30,
+				timeTrackingRemaining: 30,
 				projectTableProjectId: 1,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
@@ -306,7 +324,7 @@ const fistData = () => {
 				originalEstimate: 25000,
 				timeTrackingSpent: 10,
 				description: "<p>abc</p>",
-				timeStrackingRemaining: 30,
+				timeTrackingRemaining: 30,
 				projectTableProjectId: 2,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
@@ -319,7 +337,7 @@ const fistData = () => {
 				originalEstimate: 25000,
 				timeTrackingSpent: 10,
 				description: "<p>abc</p>",
-				timeStrackingRemaining: 30,
+				timeTrackingRemaining: 30,
 				projectTableProjectId: 2,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
@@ -332,7 +350,7 @@ const fistData = () => {
 				originalEstimate: 25000,
 				timeTrackingSpent: 10,
 				description: "<p>abc</p>",
-				timeStrackingRemaining: 30,
+				timeTrackingRemaining: 30,
 				projectTableProjectId: 2,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
@@ -375,11 +393,11 @@ const fistData = () => {
 		});
 };
 yargs.command({
-	command: 'fist_data_posgre',
-	handler: fistData
-})
+	command: "fist_data_posgre",
+	handler: fistData,
+});
 
-yargs.parse()
+yargs.parse();
 
 module.exports = {
 	sequelize,

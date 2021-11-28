@@ -32,7 +32,7 @@ const passportProject = async (req, res, next) => {
 				let { id } = data
 				req.id = id;
 				let { projectId } = req.body;
-
+        
 				//await projectServices.checkCreatorProject({ projectId })
 				let checkAutorProject = await taskServices.checkTaskAuthor({
 					projectId,

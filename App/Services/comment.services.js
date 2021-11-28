@@ -9,15 +9,11 @@ const getAllCommentFromTask = async (req, res) => {
 			include: [
 				{
 					model: Users,
-					as: "TaskComment",
-			
-				
+					as: "TaskComment",	
 				},
 			],
 			where: { taskId: taskId },
-		});
-
-		
+		});	
 		return comment;
 	} catch (error) {
 		console.log(error);
