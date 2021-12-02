@@ -23,11 +23,11 @@ const getAllCommentFromTask = async (req, res) => {
 const insertComment = async (req) => {
 	try {
 		let { taskId, content, userId } = req;
-
+    console.log(taskId, content, userId)
 		let comment = await Comment.create({
-			taskId,
-			content,
-			userId,
+			taskId: taskId,
+			content: content,
+			userId: userId,
 		});
 
 		return comment;

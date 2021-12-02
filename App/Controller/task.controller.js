@@ -215,7 +215,7 @@ const updateTask = async (req, res) => {
 			priorityId,
 			taskId
 		} = req.body;
-
+    
 		let newTask = await taskService.updateTask({
 			taskName,
 			description,
@@ -312,7 +312,9 @@ const getTaskDetail = async (req, res) =>
 					},
 					timeTrackingRemaining: task?.timeTrackingRemaining,
 					timeTrackingSpent: task?.timeTrackingSpent,
-					typeId: task?.tasktypeTableTypeId
+					typeId: task?.tasktypeTableTypeId,
+					createdAt: task?.createdAt,
+					updatedAt: task?.updatedAt
 				}
 			})
 			res.status(200).json({

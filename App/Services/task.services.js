@@ -147,11 +147,13 @@ const updateTask = async (req) => {
 			priorityTablePriorityId,
 			taskId,
 		} = req;
-
-		let newTask = await Task.findOne({ where: { taskId: taskId } });
-
+		
+		let id = taskId;
+		
+		let newTask = await Task.findOne({ where: { taskId: id } });
+		
 		if (newTask) {
-			(newTask.taskName = taskName),
+		 	(newTask.taskName = taskName),
 				(newTask.description = description),
 				(newTask.statusTableStatusId = statusTableStatusId),
 				(newTask.originalEstimate = originalEstimate),
@@ -160,7 +162,7 @@ const updateTask = async (req) => {
 				(newTask.projectTableProjectId = projectTableProjectId),
 				(newTask.tasktypeTableTypeId = tasktypeTableTypeId),
 				(newTask.priorityTablePriorityId = priorityTablePriorityId);
-			const taskUpdate = newTask.save();
+			const taskUpdate = await newTask.save();
 			return taskUpdate;
 		} else {
 			throw new Error();
@@ -200,7 +202,7 @@ const getTaskDetail = async (req) => {
 				},
 			],
 		});
-
+ 
 		return task;
 	} catch (error) {
 		console.log(error);

@@ -344,9 +344,12 @@ const removeUserProject = async (req, res) => {
 };
 
 const userLeaveProject = async (req, res) => {
-	try {
+	try
+	{
+		
 		let userId = req.id;
 		let { projectId } = req.body;
+		console.log(projectId)
 		let project = await projectServices.getProjectDetail(projectId);
 		if (project.projectId) {
 			console.log(123);
@@ -366,17 +369,17 @@ const userLeaveProject = async (req, res) => {
 				await projectServices.removeUserProject({ userId, projectId });
 				res
 				.status(200)
-				.json({ success: true, statusCode: 200, message: "Leave Project is success" });
+				.json({ success: true, statusCode: 200, message: "Leave Project is success",content:"Leave Project is success" });
 			}
 		} else {
 			res
 				.status(400)
-				.json({ success: true, statusCode: 400, message: "Project not found" });
+				.json({ success: false, statusCode: 400, message: "Project not found",content:"Project not found" });
 		}
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: true, statusCode: 400, message: "Project not found" });
+			.json({ success: false, statusCode: 400, message: "Project not found" ,content:"Project not found"});
 	}
 };
 module.exports = {
