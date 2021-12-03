@@ -69,18 +69,6 @@ const getTaskByStatus = async (req) => {
 const getProjectDetail = async (req) =>
 {
 	
-
-	// let taskAllStatusProject = await Status.findAll({
-	// 	include: [
-	// 		{
-	// 			model: Task,where: {projectTableProjectId : req},
-	// 			as: "task_tables",
-
-	// 		},
-	// 	],
-
-	// });
-  
 	let projectDetail = await Project.findOne({
 		include: [{ model: Category },{ model: Users }, { model: Users, as: 'UserAssignProject' }],
 		where: {projectId : req}
@@ -110,7 +98,7 @@ const getAllProject = async (req) => {
 			},
 		],
 	});
-	console.log(JSON.stringify(projectAll,null,2))
+	
 	return projectAll;
 };
 

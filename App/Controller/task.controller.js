@@ -293,7 +293,9 @@ const getTaskDetail = async (req, res) =>
 							commentContent: comment?.comment_table?.content,
 							id: comment?.comment_table?.commentId,
 							idUser: comment?.userId,
-							name: comment?.name
+							name: comment?.name,
+							taskId: task?.taskId,
+							createdAt: comment?.comment_table?.createdAt
 						}
 					}),
 					originalEstimate: task?.originalEstimate,

@@ -15,7 +15,6 @@ const createCommentModel = (sequelize) =>
       type: DataTypes.TEXT, 
       allowNull: false,
       collate: 'utf8_unicode_ci', 
-
     },
    
   }, {

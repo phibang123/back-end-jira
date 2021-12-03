@@ -13,7 +13,7 @@ const getDetailProject = async (req, res) => {
 			});
 		} else {
 			const projectDetail = await projectServices.getProjectDetail(projectId);
-
+			console.log(JSON.stringify(projectDetail, null, 2));
 			if (projectDetail) {
 				//console.log(JSON.stringify(projectDetail, null, 2));
 				const taskByStatus = await projectServices.getTaskByStatus(projectId);
@@ -89,10 +89,11 @@ const getDetailProject = async (req, res) => {
 						id: p?.category_table?.categoryId,
 						name: p?.category_table?.categoryName,
 					},
+					
 					projectName: p.projectName,
 					createProjectDate: p.createProjectDate,
 				}));
-
+				
 				res.status(200).json({
 					success: true,
 					statusCode: 200,
@@ -106,7 +107,7 @@ const getDetailProject = async (req, res) => {
 		}
 	} catch (error) {
 		res
-			.status(400)
+			.status(500)
 			.json({ success: true, statusCode: 500, message: "Not Found" });
 	}
 };
@@ -114,7 +115,7 @@ const getDetailProject = async (req, res) => {
 const getAllProject = async (req, res) => {
 	try {
 		let projectAll = await projectServices.getAllProject();
-		console.log(JSON.stringify(projectAll, null, 2));
+		
 		if (projectAll) {
 			let projectAllMap = projectAll?.map((project) => {
 				return {

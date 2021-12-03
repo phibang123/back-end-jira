@@ -197,12 +197,12 @@ const getTaskDetail = async (req) => {
 					as: "TaskComment",
 					//attributes: ['commentId'],
 					through: {
-						attributes: ["content", "commentId"],
+						attributes: ["content", "commentId","createdAt"],
 					},
 				},
 			],
 		});
- 
+    console.log(JSON.stringify(task,null,2))
 		return task;
 	} catch (error) {
 		console.log(error);
