@@ -6,7 +6,7 @@ const {
 	Comment,
 	UserAssignTask,
 	UserAssignProject,
-	Users
+	Users,
 } = require("../Model/root.modal");
 
 const { Category } = require("../Model/root.modal");
@@ -15,7 +15,6 @@ const { Task } = require("../Model/root.modal");
 const _ = require("lodash");
 
 const getTaskByStatus = async (req) => {
-
 	let taskAllStatusProject = await Status.findAll({
 		model: Status,
 		include: [
@@ -66,12 +65,14 @@ const getTaskByStatus = async (req) => {
 	return taskAllStatusProject;
 };
 
-const getProjectDetail = async (req) =>
-{
-	
+const getProjectDetail = async (req) => {
 	let projectDetail = await Project.findOne({
-		include: [{ model: Category },{ model: Users }, { model: Users, as: 'UserAssignProject' }],
-		where: {projectId : req}
+		include: [
+			{ model: Category },
+			{ model: Users },
+			{ model: Users, as: "UserAssignProject" },
+		],
+		where: { projectId: req },
 	});
 
 	//console.log(projectDetail);
@@ -83,12 +84,11 @@ const getProjectDetail = async (req) =>
 };
 
 const getAllProject = async (req) => {
-	
 	let projectAll = await Project.findAll({
 		include: [
 			{ model: Category },
 			{ model: Users },
-	
+
 			{
 				model: Users,
 				as: "UserAssignProject",
@@ -98,7 +98,7 @@ const getAllProject = async (req) => {
 			},
 		],
 	});
-	
+
 	return projectAll;
 };
 
@@ -135,7 +135,7 @@ const updateProject = async (projected, req) => {
 		let { categoryTableCategoryId, description, projectName, projectId } = req;
 
 		//let projected = await Project.findOne({projectId: projectId})
-	
+
 		if (projected) {
 			projected.categoryTableCategoryId = categoryTableCategoryId;
 			projected.description = description;
@@ -163,17 +163,26 @@ const assignUserProject = async (project) => {
 	}
 };
 
+const checkUserAssignTask = async (req) =>
+{
+	let { userId, projectId } = req
+	let userAsignTask = await Task.findAll({
+		include: [{ model: Users, as: "UserAssignTask",where: userId }],
+		where: { projectTableProjectId: projectId },
+	});
+  
+	return userAsignTask;
+};
+
 const removeUserProject = async (project) => {
 	let { userId, projectId } = project;
-	try {
-		//console.log( userId, projectId )
+
+		console.log( userId, projectId,"alo" )
 		let userAss = await UserAssignProject.destroy({
 			where: { userId, projectId },
 		});
-		return userAss;
-	} catch (error) {
-		throw new Error();
-	}
+   return userAss;
+
 };
 
 module.exports = {
@@ -185,6 +194,6 @@ module.exports = {
 	deleteProjectById,
 	updateProject,
 	assignUserProject,
+	checkUserAssignTask,
 	removeUserProject,
-
 };

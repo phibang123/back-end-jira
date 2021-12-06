@@ -54,7 +54,7 @@ const insertComment = async (req, res) =>
     let id = req.id;
    
     let newComment = await commentService.insertComment({ taskId, content: contentComment, userId: id })
-    console.log(JSON.stringify(newComment, null, 2))
+
     if (newComment?.commentId)
     {
       let [commentMap] = [newComment].map((e) =>

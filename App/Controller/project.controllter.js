@@ -13,8 +13,18 @@ const getDetailProject = async (req, res) => {
 			});
 		} else {
 			const projectDetail = await projectServices.getProjectDetail(projectId);
-			console.log(JSON.stringify(projectDetail, null, 2));
+
 			if (projectDetail) {
+				let indexUser = projectDetail?.UserAssignProject?.findIndex(
+					(index) => index.userId === req.id
+				);
+				if (projectDetail.user_table?.userId !== req.id) {
+					if (indexUser === -1) {
+						return res
+							.status(500)
+							.json({ success: true, statusCode: 500, message: "Not Found" });
+					}
+				}
 				//console.log(JSON.stringify(projectDetail, null, 2));
 				const taskByStatus = await projectServices.getTaskByStatus(projectId);
 				let projectArr = [projectDetail];
@@ -89,11 +99,11 @@ const getDetailProject = async (req, res) => {
 						id: p?.category_table?.categoryId,
 						name: p?.category_table?.categoryName,
 					},
-					
+
 					projectName: p.projectName,
 					createProjectDate: p.createProjectDate,
 				}));
-				
+
 				res.status(200).json({
 					success: true,
 					statusCode: 200,
@@ -115,7 +125,7 @@ const getDetailProject = async (req, res) => {
 const getAllProject = async (req, res) => {
 	try {
 		let projectAll = await projectServices.getAllProject();
-		
+
 		if (projectAll) {
 			let projectAllMap = projectAll?.map((project) => {
 				return {
@@ -345,42 +355,69 @@ const removeUserProject = async (req, res) => {
 };
 
 const userLeaveProject = async (req, res) => {
-	try
-	{
-		
+	try {
 		let userId = req.id;
 		let { projectId } = req.body;
-		console.log(projectId)
+		
 		let project = await projectServices.getProjectDetail(projectId);
 		if (project.projectId) {
-			console.log(123);
 			let index = project?.UserAssignProject?.findIndex(
 				(project) => project.userId === userId
 			);
 			if (index === -1) {
-				res
-					.status(400)
-					.json({
-						success: true,
-						statusCode: 400,
-						message: "You not assign project",
-					});
+				res.status(400).json({
+					success: true,
+					statusCode: 400,
+					message: "You not assign project",
+				});
 			} else {
 				let projectId = project.projectId;
-				await projectServices.removeUserProject({ userId, projectId });
-				res
-				.status(200)
-				.json({ success: true, statusCode: 200, message: "Leave Project is success",content:"Leave Project is success" });
+				console.log(123);
+				let countTaskAssign = await projectServices.checkUserAssignTask({
+					userId,
+					projectId,
+				});
+        console.log(countTaskAssign?.length)
+				if (countTaskAssign?.length === 0) {
+					await projectServices.removeUserProject({ userId, projectId });
+					res
+						.status(200)
+						.json({
+							success: true,
+							statusCode: 200,
+							message: "Leave Project is success",
+							content: "Leave Project is success",
+						});
+				} else {
+					res
+						.status(400)
+						.json({
+							success: false,
+							statusCode: 400,
+							message: `You have ${countTaskAssign.length} task assign , plase don't leave project`,
+							content: `You have  ${countTaskAssign.length} task assign, plase don't leave project`,
+						});
+				}
 			}
 		} else {
 			res
 				.status(400)
-				.json({ success: false, statusCode: 400, message: "Project not found",content:"Project not found" });
+				.json({
+					success: false,
+					statusCode: 400,
+					message: "Project not found",
+					content: "Project not found",
+				});
 		}
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, statusCode: 400, message: "Project not found" ,content:"Project not found"});
+			.json({
+				success: false,
+				statusCode: 400,
+				message: "Project not found",
+				content: "Project not found",
+			});
 	}
 };
 module.exports = {
