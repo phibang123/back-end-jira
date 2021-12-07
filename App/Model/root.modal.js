@@ -82,8 +82,21 @@ Task.belongsTo(TaskType);
 
 //Status
 //Status - Task (1:N)
-Status.hasMany(Task);
+Status.hasMany(Task ,{foreignKey: {
+	defaultValue: "1"
+}});
 Task.belongsTo(Status);
+
+//REPORTER
+//REPORTER - Task (1:N)
+Users.hasMany(Task ,{
+	foreignKey: 'reporter',
+
+});
+Task.belongsTo(Users,{
+	foreignKey: 'reporter',
+
+});
 
 //Project
 //Project - Task (1:N)
@@ -196,10 +209,13 @@ const fistData = () => {
 
 		//TaskType
 		.then((result) => {
-			return TaskType.create({ taskType: "bug" });
+			return TaskType.create({ taskType: "BUG" });
 		})
 		.then((result) => {
-			return TaskType.create({ taskType: "new task" });
+			return TaskType.create({ taskType: "STORY" });
+		})
+		.then((result) => {
+			return TaskType.create({ taskType: "TASK" });
 		})
 
 		//Users
@@ -302,7 +318,7 @@ const fistData = () => {
 				projectTableProjectId: 1,
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
-				statusTableStatusId: 3,
+				reporter: 2
 			});
 		})
 		.then(() => {
@@ -316,6 +332,7 @@ const fistData = () => {
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
 				statusTableStatusId: 1,
+				reporter: 1
 			});
 		})
 		.then(() => {
@@ -329,6 +346,7 @@ const fistData = () => {
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
 				statusTableStatusId: 4,
+				reporter: 2
 			});
 		})
 		.then(() => {
@@ -342,6 +360,7 @@ const fistData = () => {
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
 				statusTableStatusId: 2,
+				reporter: 1
 			});
 		})
 		.then(() => {
@@ -355,6 +374,7 @@ const fistData = () => {
 				priorityTablePriorityId: 2,
 				tasktypeTableTypeId: 1,
 				statusTableStatusId: 1,
+				reporter: 1
 			});
 		})
 

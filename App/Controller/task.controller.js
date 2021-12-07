@@ -146,12 +146,13 @@ const createTask = async (req, res) => {
 			typeId,
 			priorityId,
 		} = req.body;
-
+    reporter = req.id
 		let newTask = await taskService.createTask({
 			taskName,
 			description,
 			statusTableStatusId: statusId,
 			originalEstimate,
+			reporter,
 			timeTrackingSpent,
 			timeTrackingRemaining,
 			projectTableProjectId: projectId,
@@ -298,6 +299,12 @@ const getTaskDetail = async (req, res) =>
 							createdAt: comment?.comment_table?.createdAt
 						}
 					}),
+					userReporter: {
+						userId: task?.user_table?.userId,
+						email: task?.user_table?.email,
+						name: task?.user_table?.name,
+						avatar: task?.user_table?.avatar,
+					},
 					originalEstimate: task?.originalEstimate,
 					priorityId: task?.priorityTablePriorityId,
 					priorityTask: {
@@ -353,6 +360,7 @@ const deleteTask = async (req, res) =>
 				success: true,
 				statusCode: 200,
 				content: "Ddelete task is successfully",
+				message:"Ddelete task is successfully"
 			});
 		}
 		else

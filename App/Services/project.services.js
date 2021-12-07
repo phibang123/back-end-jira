@@ -42,14 +42,7 @@ const getTaskByStatus = async (req) => {
 							attributes: ["content", "commentId"],
 						},
 					},
-					// {
-					// 	model: Comment,
-					// 	as: "TaskComment",
-					// 	//attributes: ['userId','name','avatar'],
-					// 	// through: {
-					// 	// 	attributes: [],
-					// 	// },
-					// },
+					{ model: Users },
 				],
 
 				required: true,
@@ -61,7 +54,7 @@ const getTaskByStatus = async (req) => {
 		],
 		required: false,
 	});
-
+  //console.log(JSON.stringify(taskAllStatusProject,null,2))
 	return taskAllStatusProject;
 };
 
@@ -177,7 +170,7 @@ const checkUserAssignTask = async (req) =>
 const removeUserProject = async (project) => {
 	let { userId, projectId } = project;
 
-		console.log( userId, projectId,"alo" )
+	
 		let userAss = await UserAssignProject.destroy({
 			where: { userId, projectId },
 		});

@@ -69,6 +69,12 @@ const getDetailProject = async (req, res) => {
 											name: comment?.name,
 										};
 									}),
+									userReporter: {
+										userId: task?.user_table?.userId,
+										name: task?.user_table?.name,
+										avatar: task?.user_table?.avatar,			
+										email: task?.user_table?.email,
+									},
 									description: task?.description,
 									originalEstimate: task?.originalEstimate,
 
@@ -167,7 +173,6 @@ const getAllProject = async (req, res) => {
 
 const createProject = async (req, res) => {
 	try {
-		console.log(req.body);
 		let { projectName, description, categoryId } = req.body;
 		let categoryTableCategoryId = categoryId;
 		let alias = projectName;
@@ -181,7 +186,7 @@ const createProject = async (req, res) => {
 			userTableUserId,
 		});
 		if (createdproject) {
-			console.log(JSON.stringify(createdproject, null, 2));
+
 			let projectResult = [createdproject];
 			let [projectMap] = projectResult?.map((project) => {
 				return {
@@ -255,8 +260,6 @@ const updateProject = async (req, res) => {
 				projectId: id,
 				projectName,
 			});
-
-			console.log(JSON.stringify(projectUpdate, null, 2));
 			let [projectMap] = [projectUpdate]?.map((project) => {
 				return {
 					alias: project?.alias,
@@ -372,12 +375,12 @@ const userLeaveProject = async (req, res) => {
 				});
 			} else {
 				let projectId = project.projectId;
-				console.log(123);
+		
 				let countTaskAssign = await projectServices.checkUserAssignTask({
 					userId,
 					projectId,
 				});
-        console.log(countTaskAssign?.length)
+      
 				if (countTaskAssign?.length === 0) {
 					await projectServices.removeUserProject({ userId, projectId });
 					res
@@ -394,7 +397,8 @@ const userLeaveProject = async (req, res) => {
 						.json({
 							success: false,
 							statusCode: 400,
-							message: `You have ${countTaskAssign.length} task assign , plase don't leave project`,
+							message: `You have ${ countTaskAssign.length } task assign , plase don
+							't leave project`,
 							content: `You have  ${countTaskAssign.length} task assign, plase don't leave project`,
 						});
 				}

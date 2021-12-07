@@ -35,11 +35,13 @@ taskRouter.post("/removeUserFromTask",passport, taskController.removeUserAssignT
 
 
 //createTask Task
-taskRouter.post("/createTask", passportProject,taskController.createTask)
+//nhớ sữa
+taskRouter.post("/createTask", passport,taskController.createTask)
 
 
 //updateTask Task
-taskRouter.post("/updateTask", passportProject, taskController.updateTask)
+//nhớ sữa
+taskRouter.post("/updateTask", passport, taskController.updateTask)
 
 
 //getDetail Task

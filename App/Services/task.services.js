@@ -153,7 +153,8 @@ const updateTask = async (req) => {
 		let newTask = await Task.findOne({ where: { taskId: id } });
 		
 		if (newTask) {
-		 	(newTask.taskName = taskName),
+			(newTask.taskName = taskName),
+					
 				(newTask.description = description),
 				(newTask.statusTableStatusId = statusTableStatusId),
 				(newTask.originalEstimate = originalEstimate),
@@ -191,6 +192,7 @@ const getTaskDetail = async (req) => {
 					},
 				},
 				{ model: Priority },
+				{ model: Users },
 				{ model: TaskType },
 				{
 					model: Users,
@@ -202,7 +204,7 @@ const getTaskDetail = async (req) => {
 				},
 			],
 		});
-    console.log(JSON.stringify(task,null,2))
+    //console.log(JSON.stringify(task,null,2))
 		return task;
 	} catch (error) {
 		console.log(error);
