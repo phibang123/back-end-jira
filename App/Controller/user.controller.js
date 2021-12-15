@@ -14,9 +14,7 @@ const {
 const { validateSigninInput } = require("../Validation/validateSigninInput");
 
 const signup = async (req, res) => {
-	try
-	{
-
+	try {
 		const { errors, isValid } = validateResignterInput(req.body);
 		if (!isValid) return res.status(400).json(errors);
 		let users = req.body;
@@ -31,12 +29,20 @@ const signup = async (req, res) => {
 		});
 		const getRandomInt = (max) => {
 			return Math.floor(Math.random() * max);
-		}
+		};
 		let {
 			email,
 			name,
-			phoneNumber,	
-			avatar = `https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=104${getRandomInt(25)}&size=xxlarge}`,
+			phoneNumber,
+			avatar = `https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=104${(() => {
+				let num = getRandomInt(25);
+				if (num < 10)
+				{
+			
+					return "0" + num
+				}
+				return num
+			})()}&size=xxlarge`,
 		} = users;
 		let newUser = await userService.createUser({
 			email,
@@ -50,7 +56,7 @@ const signup = async (req, res) => {
 			res.status(200).json({
 				message: "sign up sucess",
 				success: true,
-				statusCode: 200,	
+				statusCode: 200,
 				data: newUser,
 				content: newUser,
 			});
@@ -195,7 +201,7 @@ const getUserByProjectId = async (req, res) => {
 	try {
 		let key = req.params.id;
 		let AllUserProject = await userService.getUserByProjectId(key);
-	
+
 		let UserMap = AllUserProject?.UserAssignProject?.map((user) => {
 			return {
 				avatar: user.avatar,
@@ -205,7 +211,7 @@ const getUserByProjectId = async (req, res) => {
 				name: user.name,
 			};
 		});
-	
+
 		res.status(200).json({
 			success: true,
 			statusCode: 200,

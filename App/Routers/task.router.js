@@ -36,11 +36,14 @@ taskRouter.post("/removeUserFromTask",passport, taskController.removeUserAssignT
 
 //createTask Task
 //nhớ sữa
+//1: check user ass project mới có user reporter
+
 taskRouter.post("/createTask", passport,taskController.createTask)
 
 
 //updateTask Task
 //nhớ sữa
+//2: kiểm tra có phải user reporter hay ko
 taskRouter.post("/updateTask", passport, taskController.updateTask)
 
 
