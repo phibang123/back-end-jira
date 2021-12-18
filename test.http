@@ -77,7 +77,7 @@ accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNj
 ###
 //getProjectDetail
 Get http://localhost:5000/api/Project/getProjectDetail/id=1
-accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3OTM5ODYwLCJleHAiOjE2MzgwMjYyNjB9.Py9nvtZ1hFKy5qoMEFjOYvq9CfxmY1-C_C3OAza9_W4
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM5NjM2ODExLCJleHAiOjE2Mzk3MjMyMTF9.Sw1jBqlOpJPsrgsHABDd9ei8CVYXarnN-rr1yG2iHf0
 
 ###
 //getAllProject
@@ -280,8 +280,8 @@ Content-Type: application/json
 }
 ###
 //getDetail Task
-get  http://localhost:3000/api/Task/getTaskDetail/taskId=1
-accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM3OTM5ODYwLCJleHAiOjE2MzgwMjYyNjB9.Py9nvtZ1hFKy5qoMEFjOYvq9CfxmY1-C_C3OAza9_W4
+get  http://localhost:5000/api/Task/getTaskDetail/taskId=1
+accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM5NjM2ODExLCJleHAiOjE2Mzk3MjMyMTF9.Sw1jBqlOpJPsrgsHABDd9ei8CVYXarnN-rr1yG2iHf0
 
 
 
@@ -310,4 +310,11 @@ accesstoken:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNj
 Content-Type: application/json
 
 
+
+
+
+####
+//get ALlTask
+get http://localhost:5000/api/Task/getAllTask/project=1
+accesstoken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM5NzI0MDEzLCJleHAiOjE2Mzk4MTA0MTN9.DKGFKc1KZphoUmAk8WNzAcnCW0XtmN6cghYGUuj6sYQ
 

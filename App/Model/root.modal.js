@@ -11,6 +11,7 @@ const { createUsersAssignProjectModel } = require("./uerAssignProject.modal");
 const { createTaskModel } = require("./task.modal");
 const { createUsersAssignTaskModel } = require("./userAssignTask.modal");
 const { createCommentModel } = require("./commentt.modal");
+const { createCommentDetailModel }  = require('./commentDetail.modal')
 const yargs = require("yargs");
 
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
@@ -46,6 +47,7 @@ const Project = createProjectModel(sequelize);
 const UserAssignProject = createUsersAssignProjectModel(sequelize);
 const UserAssignTask = createUsersAssignTaskModel(sequelize);
 const Comment = createCommentModel(sequelize);
+const CommentDetail = createCommentDetailModel(sequelize);
 const Task = createTaskModel(sequelize);
 //relationship
 
@@ -53,16 +55,18 @@ const Task = createTaskModel(sequelize);
 Category.hasMany(Project);
 Project.belongsTo(Category, { allowNull: false });
 //Users - Project(1:N) (creator)
-Users.hasMany(Project);
-Project.belongsTo(Users);
+Users.hasMany(Project,{onDelete: 'cascade' });
+Project.belongsTo(Users,{onDelete: 'cascade' });
 //Project - User(N:N) (Assign)
 Users.belongsToMany(Project, {
 	through: UserAssignProject,
 	foreignKey: "userId",
 	as: "ProjectAssignUser",
+	onDelete: 'cascade' 
 });
 Project.belongsToMany(Users, {
 	through: UserAssignProject,
+	onDelete: 'cascade',
 	foreignKey: "projectId",
 	as: "UserAssignProject",
 });
@@ -91,26 +95,28 @@ Task.belongsTo(Status);
 //REPORTER - Task (1:N)
 Users.hasMany(Task ,{
 	foreignKey: 'reporter',
-
+	onDelete: 'cascade' 
 });
 Task.belongsTo(Users,{
 	foreignKey: 'reporter',
-
+	onDelete: 'cascade' 
 });
 
 //Project
 //Project - Task (1:N)
-Project.hasMany(Task);
-Task.belongsTo(Project);
+Project.hasMany(Task,{onDelete: 'cascade' });
+Task.belongsTo(Project,{onDelete: 'cascade' });
 
 //Task - User(N:N) (Assign)
 Users.belongsToMany(Task, {
 	through: UserAssignTask,
+	onDelete: 'cascade' ,
 	foreignKey: "userId",
 	as: "TaskAssignUser",
 });
 Task.belongsToMany(Users, {
 	through: UserAssignTask,
+	onDelete: 'cascade',
 	foreignKey: "taskId",
 	as: "UserAssignTask",
 });
@@ -123,53 +129,91 @@ Task.belongsToMany(Users, {
 //  Users.hasMany(Comment, {foreignKey: "userId"});
 //  Comment.belongsTo(Users, {foreignKey: "userId"})
 
-Users.belongsToMany(Task, {
-	through: Comment,
+// Users.belongsToMany(Task, {
+// 	through: CommentDetail,
+// 	foreignKey: "userId",
+// 	as: "UserComment",
+// });
+// Task.belongsToMany(Users, {
+// 	through: CommentDetail,
+// 	foreignKey: "taskId",
+// 	as: "TaskComment",
+// });
+
+
+//TaskComment
+Task.hasMany(CommentDetail, {
+	foreignKey: "taskId",
+	as: "TaskComment",
+});
+CommentDetail.belongsTo(Task, {
+	foreignKey: "taskId",
+	as: "TaskComment",
+});
+//userComment
+Users.hasMany(CommentDetail, {
 	foreignKey: "userId",
 	as: "UserComment",
 });
-Task.belongsToMany(Users, {
-	through: Comment,
-	foreignKey: "taskId",
-	as: "TaskComment",
+CommentDetail.belongsTo(Users, {
+	foreignKey: "userId",
+	as: "UserComment",
+});
+
+//comment
+Comment.hasMany(CommentDetail, {
+	foreignKey: "commentContentId",
+	onDelete: 'cascade',
+	as: "CommentContent",
+});
+CommentDetail.belongsTo(Comment, {
+	foreignKey: "commentContentId",
+	as: "CommentContent",
 });
 
 const fistData = () => {
 	sequelize
 		.sync({ force: true })
-		.then((result) => {
+		.then((result) =>
+		{
 			return Category.create({ categoryName: "Dự án web" });
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Category.create({ categoryName: "Dự án phần mềm" });
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Category.create({ categoryName: "Dự án di động" });
 		})
 
 		//Status
-		.then((result) => {
+		.then((result) =>
+		{
 			return Status.create({
 				statusId: "1",
 				statusName: "BACKLOG",
 				alias: "tồn động",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Status.create({
 				statusId: "2",
 				statusName: "SELECTED FOR DEVELOPMENT",
 				alias: "được chọn để phát triển",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Status.create({
 				statusId: "3",
 				statusName: "IN PROGRESS",
 				alias: "trong tiến trình",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Status.create({
 				statusId: "4",
 				statusName: "DONE",
@@ -178,28 +222,32 @@ const fistData = () => {
 		})
 
 		// //Priority
-		.then((result) => {
+		.then((result) =>
+		{
 			return Priority.create({
 				priority: "High",
 				description: "High",
 				alias: "high",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Priority.create({
 				priority: "Medium",
 				description: "Medium",
 				alias: "medium",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Priority.create({
 				priority: "Low",
 				description: "Low",
 				alias: "low",
 			});
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return Priority.create({
 				priority: "Lowest",
 				description: "Lowest",
@@ -208,18 +256,22 @@ const fistData = () => {
 		})
 
 		//TaskType
-		.then((result) => {
+		.then((result) =>
+		{
 			return TaskType.create({ taskType: "BUG" });
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return TaskType.create({ taskType: "STORY" });
 		})
-		.then((result) => {
+		.then((result) =>
+		{
 			return TaskType.create({ taskType: "TASK" });
 		})
 
 		//Users
-		.then(() => {
+		.then(() =>
+		{
 			return Users.create({
 				email: "phibang@gmail.com",
 				password:
@@ -229,7 +281,8 @@ const fistData = () => {
 				phoneNumber: "12456789",
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Users.create({
 				email: "tanloi@gmail.com",
 				password:
@@ -239,7 +292,8 @@ const fistData = () => {
 				phoneNumber: "987654",
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Users.create({
 				email: "DucBui@gmail.com",
 				password:
@@ -249,7 +303,8 @@ const fistData = () => {
 				phoneNumber: "987654",
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Users.create({
 				email: "DucGia@gmail.com",
 				password:
@@ -260,7 +315,8 @@ const fistData = () => {
 			});
 		})
 		//Project
-		.then(() => {
+		.then(() =>
+		{
 			return Project.create({
 				projectName: "Shop bán hoa",
 				description: "Hôm nay tui test sql",
@@ -269,7 +325,8 @@ const fistData = () => {
 				userTableUserId: 1,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Project.create({
 				projectName: "Shop bán Lu",
 				description: "Hom6 kia tui fix sql",
@@ -278,7 +335,8 @@ const fistData = () => {
 				userTableUserId: 2,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Project.create({
 				projectName: "web covid",
 				description: "Hom6 kia tui fix sql",
@@ -288,27 +346,31 @@ const fistData = () => {
 			});
 		})
 		//userAssignProject
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignProject.create({
 				userId: 2,
 				projectId: 1,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignProject.create({
 				userId: 3,
 				projectId: 1,
 			});
 		})
 
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignProject.create({
 				userId: 1,
 				projectId: 2,
 			});
 		})
 		// //Task
-		.then(() => {
+		.then(() =>
+		{
 			return Task.create({
 				taskName: "font end",
 				originalEstimate: 1000,
@@ -321,7 +383,8 @@ const fistData = () => {
 				reporter: 2
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Task.create({
 				taskName: "back end",
 				originalEstimate: 25000,
@@ -335,7 +398,8 @@ const fistData = () => {
 				reporter: 1
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Task.create({
 				taskName: "redux thunk",
 				originalEstimate: 25000,
@@ -349,7 +413,8 @@ const fistData = () => {
 				reporter: 2
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Task.create({
 				taskName: "redux saga",
 				originalEstimate: 25000,
@@ -363,7 +428,8 @@ const fistData = () => {
 				reporter: 1
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Task.create({
 				taskName: "react Server",
 				originalEstimate: 25000,
@@ -379,36 +445,57 @@ const fistData = () => {
 		})
 
 		//  //user Assign Task
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignTask.create({
 				userId: 2,
 				taskId: 1,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignTask.create({
 				userId: 2,
 				taskId: 2,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return UserAssignTask.create({
 				userId: 3,
 				taskId: 2,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Comment.create({
 				content: "Alo alo 1234 1234",
 				userId: 3,
 				taskId: 1,
 			});
 		})
-		.then(() => {
+		.then(() =>
+		{
 			return Comment.create({
 				content: "Dung co nhon",
 				userId: 4,
 				taskId: 1,
+			});
+		}).then(() =>
+		{
+			return CommentDetail.create({
+			
+				userId: 4,
+				taskId: 1,
+				commentContentId: 2
+			});
+		}).then(() =>
+		{
+			return CommentDetail.create({
+			
+				userId: 3,
+				taskId: 1,
+				commentContentId: 1
 			});
 		});
 };
@@ -431,4 +518,5 @@ module.exports = {
 	UserAssignTask,
 	Task,
 	Comment,
+	CommentDetail
 };

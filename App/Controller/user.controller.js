@@ -37,8 +37,7 @@ const signup = async (req, res) => {
 			avatar = `https://bang0512.atlassian.net/secure/projectavatar?pid=10000&avatarId=104${(() => {
 				let num = getRandomInt(25);
 				if (num < 10)
-				{
-			
+				{	
 					return "0" + num
 				}
 				return num

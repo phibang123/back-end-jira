@@ -5,6 +5,8 @@ const {
 	Priority,
 	TaskType,
 	Users,
+	Comment,
+	CommentDetail,
 } = require("../Model/root.modal");
 const { QueryTypes, where } = require("sequelize");
 
@@ -147,14 +149,13 @@ const updateTask = async (req) => {
 			priorityTablePriorityId,
 			taskId,
 		} = req;
-		
+
 		let id = taskId;
-		
+
 		let newTask = await Task.findOne({ where: { taskId: id } });
-		
+
 		if (newTask) {
 			(newTask.taskName = taskName),
-					
 				(newTask.description = description),
 				(newTask.statusTableStatusId = statusTableStatusId),
 				(newTask.originalEstimate = originalEstimate),
@@ -195,16 +196,16 @@ const getTaskDetail = async (req) => {
 				{ model: Users },
 				{ model: TaskType },
 				{
-					model: Users,
+					model: CommentDetail,
 					as: "TaskComment",
-					//attributes: ['commentId'],
-					through: {
-						attributes: ["content", "commentId","createdAt"],
-					},
+					include: [{model: Comment,as: "CommentContent"},{model: Users,as: "UserComment"}]
+					// //attributes: ['commentId'],
+					
 				},
 			],
 		});
-    //console.log(JSON.stringify(task,null,2))
+
+	
 		return task;
 	} catch (error) {
 		console.log(error);
@@ -222,16 +223,48 @@ const deleteTaskById = async (req) => {
 
 const checkAuthorTaskNotProject = async (req) => {
 	try {
-
 		let projectalo = await Project.findOne({
-		  include: [{model: Task,where: {taskId : req}}],
-	
+			include: [{ model: Task, where: { taskId: req } }],
 		});
-		return projectalo
+		return projectalo;
 	} catch (error) {
 		throw new Error();
 	}
 };
+
+const findTaskById = async (req) => {
+	try {
+		let task = await Task.findOne({
+			where: { taskId: req },
+		});
+		return task;
+	} catch (error) {
+		throw new error();
+	}
+};
+
+
+const getAllTaskByIdPRoject = async (req) =>
+{
+	try {
+		let AllTask = await Task.findAll({
+			include: [
+				{
+					model: Users,
+					as: "UserAssignTask",
+					attributes: ["userId", "name", "avatar"],
+					through: {
+						attributes: [],
+					},
+				},
+			],
+			where: {projectTableProjectId: req}
+		})
+		return AllTask
+	} catch (error) {
+		throw new error();
+	}
+}
 module.exports = {
 	updateSatusTask: updateSatusTask,
 	updatePriorityTask: updatePriorityTask,
@@ -247,4 +280,6 @@ module.exports = {
 	getTaskDetail: getTaskDetail,
 	deleteTaskById: deleteTaskById,
 	checkAuthorTaskNotProject: checkAuthorTaskNotProject,
+	findTaskById: findTaskById,
+	getAllTaskByIdPRoject: getAllTaskByIdPRoject
 };

@@ -9,6 +9,6 @@ commentRouter.post("/insertComment",passport ,commentController.insertComment)
 
 commentRouter.delete("/deleteComment/idComment=:id", passport, commentController.deleteComment)
 
-commentRouter.get("/getAll/taskId=:id", commentController.getAllCommentTask)
+//commentRouter.get("/getAll/taskId=:id", commentController.getAllCommentTask)
 
 module.exports = commentRouter

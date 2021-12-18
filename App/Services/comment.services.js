@@ -1,4 +1,4 @@
-const { Comment, Users, Task } = require("../Model/root.modal");
+const { Comment, Users, Task,CommentDetail } = require("../Model/root.modal");
 
 const getAllCommentFromTask = async (req, res) => {
 	try {
@@ -22,11 +22,11 @@ const getAllCommentFromTask = async (req, res) => {
 
 const insertComment = async (req) => {
 	try {
-		let { taskId, content, userId } = req;
-		let comment = await Comment.create({
+		let { taskId, commentContentId, userId } = req;
+		let comment = await CommentDetail.create({
 			taskId: taskId,
-			content: content,
 			userId: userId,
+			commentContentId: commentContentId,
 		});
 
 		return comment;
@@ -34,13 +34,28 @@ const insertComment = async (req) => {
 		throw new Error();
 	}
 };
+
+
+const insertCommentContent = async (req) => {
+	try {
+		let {  content } = req;
+		let commentContent = await Comment.create({	
+			content: content,
+		});
+
+		return commentContent;
+	} catch (error) {
+		throw new Error();
+	}
+};
+
 const findCommentUser = async (req, res) => {
 	try {
 		let { commentId } = req;
 
-		let commentFind = await Comment.findOne({
+		let commentFind = await CommentDetail.findOne({
 			where: {
-				commentId: commentId,
+				id: commentId,
 			},
 		});
 		return commentFind;
@@ -52,8 +67,22 @@ const findCommentUser = async (req, res) => {
 const deleteComment = async (req) => {
 	try {
 		let { commentId } = req;
+		let commentDetail = await CommentDetail.destroy({
+			where: { id: commentId },
+		});
+		return commentDetail
+	} catch (error) {
+		throw new Error();
+	}
+};
+
+
+const deleteCommentContent = async (req) => {
+	try {
+		let { commentId } = req;
+		console.log(commentId,"alo")
 		await Comment.destroy({
-			where: { commentId: commentId },
+			where: {  commentId },
 		});
 	} catch (error) {
 		throw new Error();
@@ -64,4 +93,6 @@ module.exports = {
 	insertComment,
 	deleteComment,
 	findCommentUser,
+	insertCommentContent,
+	deleteCommentContent
 };

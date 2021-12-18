@@ -18,15 +18,15 @@ const getDetailProject = async (req, res) => {
 				let indexUser = projectDetail?.UserAssignProject?.findIndex(
 					(index) => index.userId === req.id
 				);
-				if (projectDetail.user_table?.userId !== req.id) {
-					if (indexUser === -1) {
-						return res
-							.status(500)
-							.json({ success: true, statusCode: 500, message: "Not Found" });
-					}
+				if (projectDetail.user_table?.userId !== req.id && indexUser === -1) {
+					return res
+						.status(500)
+						.json({ success: true, statusCode: 500, message: "Not Found" });
 				}
+
 				//console.log(JSON.stringify(projectDetail, null, 2));
 				const taskByStatus = await projectServices.getTaskByStatus(projectId);
+				//console.log(JSON.stringify(taskByStatus,null,2))
 				let projectArr = [projectDetail];
 				const [projectDetailMap] = projectArr.map((p) => ({
 					alias: p.alias,
@@ -62,17 +62,17 @@ const getDetailProject = async (req, res) => {
 									}),
 									lstComment: task?.TaskComment.map((comment) => {
 										return {
-											avatar: comment?.avatar,
-											commentContent: comment?.comment_table?.content,
-											id: comment?.comment_table?.commentId,
-											idUser: comment?.userId,
-											name: comment?.name,
+											avatar: comment?.UserComment?.avatar,
+											commentContent: comment?.CommentContent?.content,
+											id: comment?.id,
+											idUser: comment?.UserComment?.userId,
+											name: comment?.UserComment.name,
 										};
 									}),
 									userReporter: {
 										userId: task?.user_table?.userId,
 										name: task?.user_table?.name,
-										avatar: task?.user_table?.avatar,			
+										avatar: task?.user_table?.avatar,
 										email: task?.user_table?.email,
 									},
 									description: task?.description,
@@ -186,7 +186,6 @@ const createProject = async (req, res) => {
 			userTableUserId,
 		});
 		if (createdproject) {
-
 			let projectResult = [createdproject];
 			let [projectMap] = projectResult?.map((project) => {
 				return {
@@ -312,19 +311,27 @@ const asssignUserProject = async (req, res) => {
 		}
 	} catch (error) {
 		//console.log(error)
-		res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "Project not found" });
+		res.status(400).json({
+			success: true,
+			statusCode: 400,
+			message: "User exesit project",
+			content: "User exesit project",
+		});
 	}
 };
 
 const removeUserProject = async (req, res) => {
 	let { projectId, userId } = req.body;
 
-	await projectServices
-		.checkCreatorProject({ projectId })
-		.then((project) => {
-			if (project.userTableUserId === req.id) {
+	try {
+		let project = await projectServices.checkCreatorProject({ projectId });
+
+		if (project.userTableUserId === req.id) {
+			let taskAllUserAssgn = await projectServices.findUserAssgnTask({
+				projectId,
+				userId,
+			});
+			if (taskAllUserAssgn?.length === 0) {
 				projectServices
 					.removeUserProject({ userId, projectId })
 					.then(() => {
@@ -342,26 +349,36 @@ const removeUserProject = async (req, res) => {
 							message: "User not found",
 						});
 					});
-			} else {
+			}
+			else
+			{
 				res.status(400).json({
 					success: true,
 					statusCode: 400,
-					message: "User not Authorized",
+					message: `User assign ${taskAllUserAssgn?.length} task, please remove user from task`,
+					content: `User assign ${taskAllUserAssgn?.length} task, please remove user from task`
 				});
 			}
-		})
-		.catch((error) => {
-			res
-				.status(400)
-				.json({ success: true, statusCode: 400, message: "Project not found" });
-		});
+		} else {
+			res.status(400).json({
+				success: true,
+				statusCode: 400,
+				message: "User not Authorized",
+				content:"User not Authorized"
+			});
+		}
+	} catch (error) {
+		res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Project not found",content: "Project not found" });
+	}
 };
 
 const userLeaveProject = async (req, res) => {
 	try {
 		let userId = req.id;
 		let { projectId } = req.body;
-		
+
 		let project = await projectServices.getProjectDetail(projectId);
 		if (project.projectId) {
 			let index = project?.UserAssignProject?.findIndex(
@@ -375,53 +392,45 @@ const userLeaveProject = async (req, res) => {
 				});
 			} else {
 				let projectId = project.projectId;
-		
+
 				let countTaskAssign = await projectServices.checkUserAssignTask({
 					userId,
 					projectId,
 				});
-      
+
 				if (countTaskAssign?.length === 0) {
 					await projectServices.removeUserProject({ userId, projectId });
-					res
-						.status(200)
-						.json({
-							success: true,
-							statusCode: 200,
-							message: "Leave Project is success",
-							content: "Leave Project is success",
-						});
+					res.status(200).json({
+						success: true,
+						statusCode: 200,
+						message: "Leave Project is success",
+						content: "Leave Project is success",
+					});
 				} else {
-					res
-						.status(400)
-						.json({
-							success: false,
-							statusCode: 400,
-							message: `You have ${ countTaskAssign.length } task assign , plase don
+					res.status(400).json({
+						success: false,
+						statusCode: 400,
+						message: `You have ${countTaskAssign.length} task assign , plase don
 							't leave project`,
-							content: `You have  ${countTaskAssign.length} task assign, plase don't leave project`,
-						});
+						content: `You have  ${countTaskAssign.length} task assign, plase don't leave project`,
+					});
 				}
 			}
 		} else {
-			res
-				.status(400)
-				.json({
-					success: false,
-					statusCode: 400,
-					message: "Project not found",
-					content: "Project not found",
-				});
-		}
-	} catch (error) {
-		res
-			.status(500)
-			.json({
+			res.status(400).json({
 				success: false,
 				statusCode: 400,
 				message: "Project not found",
 				content: "Project not found",
 			});
+		}
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			statusCode: 400,
+			message: "Project not found",
+			content: "Project not found",
+		});
 	}
 };
 module.exports = {

@@ -1,5 +1,5 @@
 //const categoryService = require('../Services/caterory.services')
-const priorityServices = require('../Services/priority.service')
+const priorityServices = require('../Services/priority.services')
 
 
 const getPriority = async (req, res) =>

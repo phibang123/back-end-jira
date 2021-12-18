@@ -1,4 +1,5 @@
 const { Users } = require("../Model/root.modal");
+const taskServices = require("../Services/task.services");
 const taskService = require("../Services/task.services");
 
 const updateStatus = async (req, res) => {
@@ -146,7 +147,7 @@ const createTask = async (req, res) => {
 			typeId,
 			priorityId,
 		} = req.body;
-    reporter = req.id
+		reporter = req.id;
 		let newTask = await taskService.createTask({
 			taskName,
 			description,
@@ -166,9 +167,8 @@ const createTask = async (req, res) => {
 				taskId: newTask?.taskId,
 			};
 		});
-		await taskService.addUserAssignTaskList(listuserMap,newTask?.taskId);
-		let [userMap] = [newTask]?.map((e) =>
-		{
+		await taskService.addUserAssignTaskList(listuserMap, newTask?.taskId);
+		let [userMap] = [newTask]?.map((e) => {
 			return {
 				taskId: e.taskId,
 				taskName: e.taskName,
@@ -180,9 +180,9 @@ const createTask = async (req, res) => {
 				timeTrackingRemaining: e.timeTrackingRemaining,
 				projectId: e.projectTableProjectId,
 				typeId: e.tasktypeTableTypeId,
-				priorityId: e.priorityTablePriorityId
-			}
-		})
+				priorityId: e.priorityTablePriorityId,
+			};
+		});
 		res.status(200).json({
 			success: true,
 			statusCode: 200,
@@ -190,19 +190,17 @@ const createTask = async (req, res) => {
 			content: userMap,
 		});
 	} catch (error) {
-		res
-			.status(400)
-			.json({ success: true, statusCode: 400, message: "Task not found" ,content: "task already exists!"});
+		res.status(400).json({
+			success: true,
+			statusCode: 400,
+			message: "Task not found",
+			content: "task already exists!",
+		});
 	}
 };
 
-
-
-
 const updateTask = async (req, res) => {
-	try
-	{
-		
+	try {
 		let {
 			listUserAsign,
 			taskName,
@@ -214,9 +212,9 @@ const updateTask = async (req, res) => {
 			projectId,
 			typeId,
 			priorityId,
-			taskId
+			taskId,
 		} = req.body;
-    
+
 		let newTask = await taskService.updateTask({
 			taskName,
 			description,
@@ -228,7 +226,7 @@ const updateTask = async (req, res) => {
 			projectTableProjectId: projectId,
 			tasktypeTableTypeId: typeId,
 			priorityTablePriorityId: priorityId,
-			taskId
+			taskId,
 		});
 
 		let listuserMap = listUserAsign?.map((user) => {
@@ -237,9 +235,8 @@ const updateTask = async (req, res) => {
 				taskId: newTask?.taskId,
 			};
 		});
-		await taskService.addUserAssignTaskList(listuserMap,newTask?.taskId);
-		let [userMap] = [newTask]?.map((e) =>
-		{
+		await taskService.addUserAssignTaskList(listuserMap, newTask?.taskId);
+		let [userMap] = [newTask]?.map((e) => {
 			return {
 				taskId: e.taskId,
 				taskName: e.taskName,
@@ -251,9 +248,9 @@ const updateTask = async (req, res) => {
 				timeTrackingRemaining: e.timeTrackingRemaining,
 				projectId: e.projectTableProjectId,
 				typeId: e.tasktypeTableTypeId,
-				priorityId: e.priorityTablePriorityId
-			}
-		})
+				priorityId: e.priorityTablePriorityId,
+			};
+		});
 		res.status(200).json({
 			success: true,
 			statusCode: 200,
@@ -267,37 +264,32 @@ const updateTask = async (req, res) => {
 	}
 };
 
-const getTaskDetail = async (req, res) =>
-{
+const getTaskDetail = async (req, res) => {
 	try {
-		let taskId = req.params.id
-		let task = await taskService.getTaskDetail(taskId)
-		if (task[0]?.taskId)
-		{
-			let [taskMap] = task.map((task) =>
-			{
+		let taskId = req.params.id;
+		let task = await taskService.getTaskDetail(taskId);
+		if (task[0]?.taskId) {
+			let [taskMap] = task.map((task) => {
 				return {
 					alias: task.taskName,
-					assigness: task?.UserAssignTask?.map((user) =>
-					{
+					assigness: task?.UserAssignTask?.map((user) => {
 						return {
 							id: user?.userId,
 							name: user?.name,
-							avatar: user?.avatar
-						}
+							avatar: user?.avatar,
+						};
 					}),
 					description: task?.description,
-					lstComment: task?.TaskComment?.map((comment) =>
-					{
+					lstComment: task?.TaskComment?.map((comment) => {
 						return {
-							avatar: comment?.avatar,
-							commentContent: comment?.comment_table?.content,
-							id: comment?.comment_table?.commentId,
+							avatar: comment?.UserComment?.avatar,
+							commentContent: comment?.CommentContent?.content,
+							id: comment?.id,
 							idUser: comment?.userId,
-							name: comment?.name,
+							name: comment?.UserComment?.name,
 							taskId: task?.taskId,
-							createdAt: comment?.comment_table?.createdAt
-						}
+							createdAt: comment?.CommentContent?.createdAt,
+						};
 					}),
 					userReporter: {
 						userId: task?.user_table?.userId,
@@ -323,58 +315,85 @@ const getTaskDetail = async (req, res) =>
 					timeTrackingSpent: task?.timeTrackingSpent,
 					typeId: task?.tasktypeTableTypeId,
 					createdAt: task?.createdAt,
-					updatedAt: task?.updatedAt
-				}
-			})
+					updatedAt: task?.updatedAt,
+				};
+			});
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				message: "Xử lý thành công!",
 				content: taskMap,
 			});
-		}
-		else
-		{
+		} else {
 			res
-		.status(400)
-		.json({ success: true, statusCode: 400, message: "Task not found" });
+				.status(400)
+				.json({ success: true, statusCode: 400, message: "Task not found" });
 		}
 	} catch (error) {
 		res
-		.status(400)
-		.json({ success: true, statusCode: 400, message: "Task not found" });
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Task not found" });
 	}
-}
-const deleteTask = async (req, res) =>
-{
-	try
-	{
-		let userId = req.id
-		let taskId = req.params.id
-		let task = await taskService.checkAuthorTaskNotProject(taskId)
-		console.log(JSON.stringify(task, null, 2));
-		if (task?.userTableUserId === userId)
-		{
-			await taskService.deleteTaskById(taskId)
+};
+const deleteTask = async (req, res) => {
+	try {
+		let userId = req.id;
+		let taskId = req.params.id;
+		let project = await taskService.checkAuthorTaskNotProject(taskId);
+
+		if (project?.userTableUserId === userId) {
+			await taskService.deleteTaskById(taskId);
 			res.status(200).json({
 				success: true,
 				statusCode: 200,
 				content: "Ddelete task is successfully",
-				message:"Ddelete task is successfully"
+				message: "Ddelete task is successfully",
 			});
-		}
-		else
-		{
-			res
-		.status(401)
-		.json({ success: true, statusCode: 401, message: "You not Author" });
+		} else {
+			let task = await taskService.findTaskById(taskId);
+	
+			if (task.reporter === Number(req.id)) {
+				await taskService.deleteTaskById(taskId);
+				res.status(200).json({
+					success: true,
+					statusCode: 200,
+					content: "Ddelete task is successfully",
+					message: "Ddelete task is successfully",
+				});
+			} else {
+				res
+					.status(401)
+					.json({ success: true, statusCode: 401, message: "You not Author" });
+			}
 		}
 	} catch (error) {
 		res
-		.status(400)
-		.json({ success: true, statusCode: 400, message: "Task not found" });
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Task not found" });
+	}
+};
+
+
+const getAllTaskByProjectId = async (req, res) =>
+{
+	try {
+		let id = req.params.id;
+		let allTask = await taskServices.getAllTaskByIdPRoject(id)
+		res.status(200).json({
+			success: true,
+			statusCode: 200,
+			message: "Xử lý thành công!",
+			content: allTask,
+		});
+
+		console.log(JSON.stringify(allTask,null,2))
+	} catch (error) {
+		res
+			.status(400)
+			.json({ success: true, statusCode: 400, message: "Task not found" });
 	}
 }
+
 module.exports = {
 	updateStatus,
 	updatePriority,
@@ -386,5 +405,6 @@ module.exports = {
 	createTask,
 	updateTask,
 	getTaskDetail,
-	deleteTask
+	deleteTask,
+	getAllTaskByProjectId
 };

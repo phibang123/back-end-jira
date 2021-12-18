@@ -52,6 +52,10 @@ taskRouter.get("/getTaskDetail/taskId=:id", passport,taskController.getTaskDetai
 
 
 //deleteTask Task
-taskRouter.delete("/removeTask/taskId=:id", passport,taskController.deleteTask)
+taskRouter.delete("/removeTask/taskId=:id", passport, taskController.deleteTask)
+
+
+//deleteTask Task
+taskRouter.get("/getAllTask/project=:id", passport ,taskController.getAllTaskByProjectId)
 
 module.exports = taskRouter
