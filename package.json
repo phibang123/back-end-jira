@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "startServer": "nodemon App/Src/server.js",
-    "client": "npm start --prefix jira_clone_project",
-    "start": "node App/Src/server.js",
-    "dev": "concurrently \"npm run client\" \"npm run start\" "
-  },
   "author": "Bang",
   "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startServer": "node App/Src/server.js",
+    
+    "start": "node App/Src/server.js",
+ 
+    "dev": "concurrentyle \"npm run server\" \"npm run start\" "
+  },
+ 
   "devDependencies": {
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
