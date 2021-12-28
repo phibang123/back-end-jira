@@ -1,5 +1,5 @@
 //const { DB, HOST, PASSWORD, USER, dialect } = require("../Configs/db.config");
-const { DB, HOST, PASSWORD, USER, dialect } = require("../Configs/db.config");
+const { DB, HOST, PASSWORD, USER, DIALECT } = require("../Configs/db.config");
 const { Sequelize, DataTypes } = require("sequelize");
 const { createUsersModel } = require("./users.modal");
 const { createCategoryModel } = require("./category.modal");
@@ -16,7 +16,7 @@ const yargs = require("yargs");
 
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
 	host: HOST,
-	dialect,
+	dialect: DIALECT,
 	connectionString: process.env.DATABASE_URL,
 
 	protocol: "postgres",
