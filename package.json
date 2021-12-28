@@ -8,15 +8,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startServer": "node App/Src/server.js",
-    
     "start": "node App/Src/server.js",
- 
     "dev": "concurrentyle \"npm run server\" \"npm run start\" "
   },
- 
   "devDependencies": {
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
     "nodemon": "^2.0.14",
     "validator": "^13.7.0",
     "yargs": "^17.2.1"
