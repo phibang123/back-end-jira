@@ -1,5 +1,5 @@
 //categoryGetAll
-Get http://localhost:7001/api/ProjectCategory 
+Get http://localhost:5000/api/ProjectCategory 
 //accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVMOtbiIsImlhdCI6MTYzNjg0OTUyMiwiZXhwIjoxNjM3MjA5NTIyfQ.QCNnxBKti5w7XocDS-lP4xWghmx7SrCzn_MgQ4gbUmU 
 //done
 
