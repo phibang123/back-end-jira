@@ -14,18 +14,18 @@ const { createCommentModel } = require("./commentt.modal");
 const { createCommentDetailModel }  = require('./commentDetail.modal')
 const yargs = require("yargs");
 
-const sequelize = new Sequelize(DB, USER, PASSWORD, {
+const sequelize = new Sequelize(DB, USER, PASSWORD,{
 	host: HOST,
 	dialect,
 	connectionString: process.env.DATABASE_URL,
 
-	protocol: "postgres",
+	protocol: 'postgres',
 	dialectOptions: {
 		ssl: {
 			require: true,
-			rejectUnauthorized: false,
-		},
-	},
+			rejectUnauthorized: false
+		}
+	}
 });
 
 const connected = async () => {
