@@ -1,14 +1,7 @@
 const express = require("express");
 const router = require("../Routers/root.router");
 const bodyParser = require("body-parser");
-const moment = require('moment')
-const cors = require("cors");
-const schedule = require("node-schedule")
-// const corsOptions ={
-//   origin:'*', 
-//   credentials:true,            //access-control-allow-credentials:true
-//   optionSuccessStatus:200,
-// }
+
 
 const app = express(); //để nó chuyển tất cả res req thành json để tiện thao tác
 app.use(express.json());
