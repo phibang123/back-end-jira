@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 //   console.log("i ran")
 // })
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 app.listen(port,{'Access-Control-Allow-Origin' : '*'}, () =>
 {
   console.log(moment().format('LTS'))
