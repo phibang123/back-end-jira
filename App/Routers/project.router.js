@@ -19,4 +19,16 @@ projectRouter.post("/createProjectAuthorize", passport, projectController.create
 
 //createProject
 projectRouter.delete("/deleteProject/projectId=:id", passport, projectController.deleteProject);
+
+//updateProject
+projectRouter.put("/updateProject/projectId=:id", passport, projectController.updateProject);
+
+//assignUserProject
+projectRouter.post("/assignUserProject", passport, projectController.asssignUserProject);
+
+//removeUserProject
+projectRouter.post("/removeUserFromProject", passport, projectController.removeUserProject);
+
+//removeUserProject
+projectRouter.post("/userLeaveProject", passport, projectController.userLeaveProject);
 module.exports = projectRouter;

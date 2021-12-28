@@ -1,5 +1,5 @@
 //const categoryService = require('../Services/caterory.services')
-const priorityServices = require('../Services/priority.service')
+const priorityServices = require('../Services/priority.services')
 
 
 const getPriority = async (req, res) =>
@@ -25,7 +25,7 @@ const getPriority = async (req, res) =>
     }
     else
     {
-      res.status(400).json({ success: true, statusCode: 404,message: "Not Found" })
+      res.status(400).json({ success: false, statusCode: 404,message: "Not Found" })
     }
     // if (categoryList)
     // {

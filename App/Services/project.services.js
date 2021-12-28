@@ -1,19 +1,20 @@
 const {
 	Project,
 	Status,
+	Task,
 	Priority,
 	TaskType,
 	Comment,
 	UserAssignTask,
+	UserAssignProject,
+	Users,
+	Category,
+	CommentDetail,
 } = require("../Model/root.modal");
-const { Users } = require("../Model/root.modal");
-const { Category } = require("../Model/root.modal");
-const { Task } = require("../Model/root.modal");
+
 //const { UserAssign } = require("../Model/root.modal");
-const _ = require("lodash");
 
 const getTaskByStatus = async (req) => {
-	console.log(req);
 	let taskAllStatusProject = await Status.findAll({
 		model: Status,
 		include: [
@@ -34,21 +35,15 @@ const getTaskByStatus = async (req) => {
 						},
 					},
 					{
-						model: Users,
+						model: CommentDetail,
 						as: "TaskComment",
-						//attributes: ['commentId'],
-						through: {
-							attributes: ["content", "commentId"],
-						},
+						include: [
+							{ model: Comment, as: "CommentContent" },
+							{ model: Users, as: "UserComment" },
+						],
+						// //attributes: ['commentId'],
 					},
-					// {
-					// 	model: Comment,
-					// 	as: "TaskComment",
-					// 	//attributes: ['userId','name','avatar'],
-					// 	// through: {
-					// 	// 	attributes: [],
-					// 	// },
-					// },
+					{ model: Users },
 				],
 
 				required: true,
@@ -65,31 +60,24 @@ const getTaskByStatus = async (req) => {
 };
 
 const getProjectDetail = async (req) => {
-	// let taskAllStatusProject = await Status.findAll({
-	// 	include: [
-	// 		{
-	// 			model: Task,where: {projectTableProjectId : req},
-	// 			as: "task_tables",
-
-	// 		},
-	// 	],
-
-	// });
-
 	let projectDetail = await Project.findOne({
-		include: [{ model: Category }, { model: Users }],
+		include: [
+			{ model: Category },
+			{ model: Users },
+			{ model: Users, as: "UserAssignProject" },
+		],
+		where: { projectId: req },
 	});
 
 	//console.log(projectDetail);
 	// .then(function(accounts) {
 	// 	return _.map(accounts, function(account) { return account.Name; })
 	// })
-	//console.log(projectDetail)
+	//console.log(JSON.stringify(projectDetail,null,2))
 	return projectDetail;
 };
 
 const getAllProject = async (req) => {
-	console.log(123);
 	let projectAll = await Project.findAll({
 		include: [
 			{ model: Category },
@@ -104,6 +92,7 @@ const getAllProject = async (req) => {
 			},
 		],
 	});
+
 	return projectAll;
 };
 
@@ -116,26 +105,102 @@ const checkCreatorProject = async (req) => {
 	try {
 		let checkproject = await Project.findOne({
 			where: { projectId: req.projectId },
-			attributes: ["userTableUserId" ]
 		});
-		return checkproject
+		return checkproject;
 	} catch (error) {
-		throw new Error("Project not exist")
+		throw new Error("Project not exist");
 	}
 };
 
-const deleteProjectById = async (req) =>
-{
+const deleteProjectById = async (req) => {
 	try {
 		let deleteProject = await Project.destroy({
 			where: { projectId: req.projectId },
-			attributes: ["projectId" ]
+			attributes: ["projectId"],
 		});
-		return deleteProject
+		return deleteProject;
 	} catch (error) {
-		throw new Error(error)
+		throw new Error(error);
 	}
 };
+
+const updateProject = async (projected, req) => {
+	try {
+		let { categoryTableCategoryId, description, projectName, projectId } = req;
+
+		//let projected = await Project.findOne({projectId: projectId})
+
+		if (projected) {
+			projected.categoryTableCategoryId = categoryTableCategoryId;
+			projected.description = description;
+			projected.projectName = projectName;
+			projected.alias = projectName;
+
+			const projectUpdate = await projected.save();
+			return projectUpdate;
+		} else {
+			throw new Error(error);
+		}
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const assignUserProject = async (project) => {
+	let { userId, projectId } = project;
+	try {
+		//console.log( userId, projectId )
+		let userAss = await UserAssignProject.create({ userId, projectId });
+		return userAss;
+	} catch (error) {
+		throw new Error();
+	}
+};
+
+const checkUserAssignTask = async (req) => {
+	let { userId, projectId } = req;
+	let userAsignTask = await Task.findAll({
+		include: [{ model: Users, as: "UserAssignTask", where: userId }],
+		where: { projectTableProjectId: projectId },
+	});
+
+	return userAsignTask;
+};
+
+const removeUserProject = async (project) => {
+	let { userId, projectId } = project;
+
+	let userAss = await UserAssignProject.destroy({
+		where: { userId, projectId },
+	});
+	return userAss;
+};
+
+const findUserAssgnTask = async ({ projectId, userId }) => {
+	console.log(123);
+	let taskFind = await Task.findAll({
+		// include: [{
+		// 	model: UserAssignTask,
+		// 	where: {
+		// 		userId
+		// 	}
+		// }],
+		include: [
+			{
+				model: Users,
+				as: "UserAssignTask",
+				attributes: ["userId", "name", "avatar"],
+				where: { userId },
+			},
+		],
+		where: {
+			projectTableProjectId: projectId,
+		},
+	});
+
+	return taskFind;
+};
+
 module.exports = {
 	getProjectDetail,
 	getTaskByStatus,
@@ -143,4 +208,9 @@ module.exports = {
 	createProject,
 	checkCreatorProject,
 	deleteProjectById,
+	updateProject,
+	assignUserProject,
+	checkUserAssignTask,
+	removeUserProject,
+	findUserAssgnTask,
 };

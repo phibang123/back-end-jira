@@ -1,12 +1,19 @@
 const express = require("express");
 const router = require("../Routers/root.router");
-//const cors = require("cors");
 const bodyParser = require("body-parser");
-
+const moment = require('moment')
+const cors = require("cors");
+const schedule = require("node-schedule")
+// const corsOptions ={
+//   origin:'*', 
+//   credentials:true,            //access-control-allow-credentials:true
+//   optionSuccessStatus:200,
+// }
 
 const app = express(); //để nó chuyển tất cả res req thành json để tiện thao tác
 app.use(express.json());
 
+//app.use(cors(corsOptions)) 
 
 
 //app.use(cors(corsOptions))
@@ -27,61 +34,21 @@ app.use(express.urlencoded({ extended: true }));
 
 // =========================================================================
 
-const { sequelize } = require("../Model/root.modal");
-const { Category } = require("../Model/root.modal");
-const { Status } = require("../Model/root.modal")
-const { TaskType } = require("../Model/root.modal")
-const { Priority } = require("../Model/root.modal")
 
 
+// schedule.scheduleJob('3 * * * * *', () =>
+// {
+//   console.log("i ran")
+// })
 
-// sequelize
-// 	.sync({ force: true })
-	// .then((result) =>
-	// {
-	 
-  // })
-// 	.then((result) => {
-// 		return Category.create({ categoryName: "Dự án web" });
-// 	})
-// 	.then((result) => {
-// 		return Category.create({ categoryName: "Dự án phần mềm" });
-// 	})
-// 	.then((result) => {
-// 		return Category.create({ categoryName: "Dự án di động" });
-// 	})
-	
-	////Status
-	// .then((result) => {
-	// 	return Status.create({ statusName: "BACKLOG",alias: "tồn động" });
-	// }).then((result) => {
-	// 	return Status.create({ statusName: "SELECTED FOR DEVELOPMENT",alias: "được chọn để phát triển" });
-	// }).then((result) => {
-	// 	return Status.create({ statusName: "IN PROGRESS",alias: "trong tiến trình" });
-	// }).then((result) => {
-	// 	return Status.create({ statusName: "DONE",alias: "hoàn thành" });
-	// })
-  
-	////Priority
-  // .then((result) => {
-	// 	 	return Priority.create({ priority: "High",description: "High",alias: "high" });
-	// 	 }).then((result) => {
-	// 	 	return Priority.create({ priority: "Medium",description: "Medium",alias: "medium" });
-	// 	 }).then((result) => {
-	// 	 	return Priority.create({ priority: "Low",description: "Low",alias: "low" });
-	// 	 }).then((result) => {
-	// 	 	return Priority.create({ priority: "Lowest",description: "Lowest",alias: "lowest" });
-	// 	 })
- 
+//const port = process.env.PORT || 3000;
+// app.listen(port,{'Access-Control-Allow-Origin' : '*'}, () =>
+// {
+//   console.log(moment().format('LTS'))
+//   console.log('Server running on port ' + port);
+// })
 
-	////TaskType
-	// .then((result) =>
-	// {
-	//  	return TaskType.create({ taskType: "bug" });
-	//  }).then((result) =>
-	// {
-	//  	return TaskType.create({ taskType: "new task" });
-	//  })
+
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
