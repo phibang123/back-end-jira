@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startServer": "node App/Src/server.js",
     "client": "npm start --prefix jira_clone_project",
-    "start": "nodemon App/Src/server.js",
+    "start": "node App/Src/server.js",
     "dev": "concurrently \"npm run client\" \"npm run start\" "
   },
   "author": "Bang",
