@@ -17,7 +17,7 @@ const yargs = require("yargs");
 const sequelize = new Sequelize(DB, USER, PASSWORD,{
 	host: HOST,
 	dialect,
-	connectionString: process.env.DATABASE_URL,
+	// connectionString: process.env.DATABASE_URL,
 
 	protocol: 'postgres',
 	dialectOptions: {
